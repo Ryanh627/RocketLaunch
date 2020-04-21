@@ -1,0 +1,25 @@
+Wiring diagram included in the image file in this folder.
+
+Using the XYGStudy 3 Relay Pi hat, I created a Python program as directed by the
+website: https://tutorals-raspberrypi.com/raspberry-pi-control-relay-switch-via-
+gpio/
+
+The relay hat starts will all circuits open, which does not allow the power supp
+ly to immediately ignite the igniter.
+
+This relay also needs to be set LOW in order to trigger the mechanism to be 
+closed.
+
+The lines of the program are as follows:
+
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(40,GPIO.OUT) #Pin40 on Pi is set to output
+GPIO.output(40,GPIO.HIGH) #Pin40 set High
+GPIO.output(40,GPIO.LOW) #Pin40 set Low
+
+After executing this program, the igniter immedately was set off, and turning 
+off the power supply or setting GPIO.output(40,GPIO.HIGH) would turn off the 
+current to the igniter.
+
+
