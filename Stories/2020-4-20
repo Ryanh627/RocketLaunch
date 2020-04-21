@@ -19,7 +19,7 @@ Range Master:
 1)  As an RM,
     I want to be able to log into the local web server with an administrator account
     So that I can manage the other users and launch rockets only with my permission.
-        est. time:
+        est. time: 20 Hours
         Risk: 5
         Hours spent: 0
   
@@ -27,44 +27,62 @@ Range Master:
 2)  As an RM,
     I want to be able to be able to set up to three rockets and be notified which rockets are ready to launch
     So that I know which rockets are ready and launch them individually.
-        est. time:
-        Risk: 5
+        est. time: 10 hours
+        Risk: 4
         Hours spent: 0
 
 
 3)  As an RM,
     I want to have a physical master switch that is required to launch the rockets
     So as to minimize the risk of an unplanned launch as much as possible.
-        est. time:
-        Risk: 5
+        est. time: 5 hours
+        Risk: 4
         Hours spent: 0
 
 
 4)  As an RM,
     In the event of a miss fire, I want to be notified and have the master switch automatically turn off 
     So there are safty measures in the event of a miss fire.
-        est. time:
-        Risk: 7
+        est. time: 15 hours
+        Risk: 8
         Hours spent: 0
 
 
+//-------- Possibly release two ----------------
+
 5)  As an RM,
-    I want the following rocket data to be recorded and saved to the web server during launch  
-        -Launch video
-        -estimated height
-        -current wind speeds
+    I want the rocket's launch to be recorded in video saved to the web server
+    So that the rocket owners are able see this data in the future.
+        est. time: 10 hours
+        Risk: 6
+        Hours spent: 0
+
+
+6)  As an RM,
+    I want the rocket's height to be estimated  
     So that the rocket owners are able to retrieve this data in the future.
-        est. time:
+        est. time: 20 hours
         Risk: 9
         Hours spent: 0
 
+
+7)  As an RM,
+    I want to be able to record the current weather data to be saved with the rocket data 
+    So that we can see how the weather conditions affect the rocket
+        est. time: 15 hours
+        Risk: 8
+        Hours spent: 0
+
+
+
+//-------- Possibly release two, for security reasons ----------------
 
 Rocket Owner:
 
 1)  As a Rocket Owner,
     I want to be able to create my own account and log into the web server
     so that I am able to participate with the rocket launch.
-        est. time:
+        est. time: 20 hours
         Risk: 5
         Hours spent: 0
 
@@ -76,13 +94,13 @@ Rocket Owner:
         -Nick Name
         -Email
     so that I am able to connect with other rocet owners.
-        est. time:
-        Risk: 5
+        est. time: 10 hours
+        Risk: 4
         Hours spent: 0
 
 3)  As a Rocket Owner,
     I want the recorded data from my Rocket to be emailed to me if I have an email on profile
     so that I am able to access this data without access to the web server.
-        est. time:
-        Risk: 5
+        est. time: 10 hours
+        Risk: 7
         Hours spent: 0
