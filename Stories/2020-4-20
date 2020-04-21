@@ -79,3 +79,10 @@ Rocket Owner:
         est. time:
         Risk: 5
         Hours spent: 0
+
+3)  As a Rocket Owner,
+    I want the recorded data from my Rocket to be emailed to me if I have an email on profile
+    so that I am able to access this data without access to the web server.
+        est. time:
+        Risk: 5
+        Hours spent: 0
