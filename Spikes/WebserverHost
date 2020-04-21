@@ -1,0 +1,13 @@
+I used my Raspberry Pi 3 B+, and no other materials.
+
+Following the instructions on the website: 
+http://www.raspberrypi.org/documentation/configuration/wireless/access-point.md
+
+I set up my raspberry pi to use it's wifi as a standalone network that was capable of being connected to by other devices.
+
+Using Apache2, which is installed by running the command
+"sudo apt install apache2"
+I succesfully connected to the raspberry pi on my phone, and typed in the pi's 
+ipaddress into my phone's browser, and successfully pulled up the default
+apache test page, proving that my pi was hosting the website on the local 
+network.
