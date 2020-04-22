@@ -5,10 +5,16 @@ website: https://tutorals-raspberrypi.com/raspberry-pi-control-relay-switch-via-
 gpio/
 
 The relay hat starts will all circuits open, which does not allow the power supp
-ly to immediately ignite the igniter.
+ly to immediately ignite the igniter. It also has 3 inputs on each relay,
+one on the leftmost side that is only cirucit complete with the other two
+ on the right side if the relay is closed (LOW). The positive side of a 12V 
+battery supply was connected to relay 3's middle, and the left side of the 
+relay was connected with a seperate wire to one of the igniter's ends.
+The negative side of the battery was connected to the other side of the
+igniter. Relay 3's GPIO pin on the Pi's board is pin 40.
 
 This relay also needs to be set LOW in order to trigger the mechanism to be 
-closed.
+closed, and defaults to HIGH.
 
 The lines of the program are as follows:
 
