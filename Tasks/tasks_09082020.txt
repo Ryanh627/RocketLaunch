@@ -1,20 +1,22 @@
+Key:
+	I = Individual task
+	M = Meeting task
+
 Tasks-----------------------------------
 
 I1) Finalize circuit design
 	a) With master safety switch
 
-M1) Determine MVC Framework
+I2) Determine MVC Framework
 
-M2) Develop standards for front end
+M1) Develop standards for front end
 
-I2) Develop web app landing page front end
-
-I3) Develop web app login page front end
+I3) Develop web app landing page front end
 
 Assignments-----------------------------
 
-Benjamin:
+Benjamin: I2
 
-Ryan:
+Ryan: I1
 
-Peter:
+Peter: I3
