@@ -1,0 +1,8 @@
+1) Finalize circuit design
+	a) With master safety switch
+
+2) Determine MVC Framework
+
+3) Develop web app landing page front end
+
+4) Develop web app login page front end
