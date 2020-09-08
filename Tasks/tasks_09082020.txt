@@ -1,8 +1,20 @@
-1) Finalize circuit design
+Tasks-----------------------------------
+
+I1) Finalize circuit design
 	a) With master safety switch
 
-2) Determine MVC Framework
+M1) Determine MVC Framework
 
-3) Develop web app landing page front end
+M2) Develop standards for front end
 
-4) Develop web app login page front end
+I2) Develop web app landing page front end
+
+I3) Develop web app login page front end
+
+Assignments-----------------------------
+
+Benjamin:
+
+Ryan:
+
+Peter:
