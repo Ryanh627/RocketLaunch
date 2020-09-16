@@ -1,6 +1,7 @@
 from flask import Flask, redirect, url_for, request, render_template
 import random
 from launch import *
+from multiprocessing import Process
 
 app = Flask(__name__)
 
@@ -10,7 +11,8 @@ def index():
 
 @app.route('/launch')
 def launch():
-    test()
+    p = Process(target = test)
+    p.start()
     return "Launched"
 
 if __name__ == '__main__':
