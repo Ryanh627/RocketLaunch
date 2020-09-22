@@ -13,6 +13,8 @@ I2) Integration of Flask and Apache
 
 I3) Further develop web app landing page
 
+I4) Create css standard file
+
 M1) Front end design and landing
 
 Assignments-----------------------------
