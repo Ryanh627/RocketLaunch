@@ -1,5 +1,1 @@
-Color schemes:
-Included in bootstrap
-
-Font sizes:
-Included in bootstrap
+Front end css will be dictated by a file titled "standard.css"
