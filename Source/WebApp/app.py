@@ -31,13 +31,20 @@ def mission_control():
 
     return render_template('mission_control.html')
 
+@app.route('/my_account')
+def my_account():
+    if not logged_in():
+        return redirect(url_for('login'))
+
+    return render_template('my_account.html')
+
 @app.route('/login')
 def login():
     return render_template('login.html')
 
 @app.route('/sign_up')
 def sign_up():
-    return render_template('standard.html')
+    return render_template('sign_up.html')
 
 @app.route('/launch')
 def launch():
