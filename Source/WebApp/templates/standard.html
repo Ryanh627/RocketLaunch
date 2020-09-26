@@ -1,6 +1,6 @@
 <html>
   <head>
-    
+	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/standard.css') }}"</link>
   </head>
    
   <body>
@@ -10,10 +10,11 @@
     
     <div id = 'footer-padding'></div>
     <div id = 'footer'>
-      <a href = '#'><h2>Sign Up</h2></a>
-      <a href = '#'><h2>Login</h2></a>
-      <a href = '#'><h2>My Account</h2></a>
-      <a href = '#'><h2>Mission Control</h2></a>
+      <a href = '/sign_up'><h2>Sign Up</h2></a>
+      <a href = '/login'><h2>Login</h2></a>
+      <a href = '/my_account'><h2>My Account</h2></a>
+      <a href = '/mission_control'><h2>Mission Control</h2></a>
+      <a href = '/logout'><h2 id = 'footer_logout'>Logout</h2></a>
     </div>
   </body>
 </html>

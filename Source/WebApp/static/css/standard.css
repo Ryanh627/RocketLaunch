@@ -81,6 +81,10 @@ a{
   text-decoration:none;
 }
 
+#footer_logout{
+  color:rgb(242, 86, 83);
+}
+
 @media only screen and (hover: none) and (pointer: coarse){
   
   h1{
