@@ -1,34 +1,98 @@
+html,body{
+  height:100%;
+}
+
 h1{
-	font-family:consolas;
-	color:rgb(92,243,164);
-	font-size:36px;
+  font-family:consolas;
+  color:rgb(92,243,164);
+  font-size:36px;
 }
 
 h2{
-	font-family:consolas;
-	color:rgb(144,165,248);
-	font-size:24px;
+  font-family:consolas;
+  color:rgb(144,165,248);
+  font-size:24px;
 }
 
 p,ul{
-	font-family:consolas;
-	color:rgb(233,237,236);
-	font-size:16px;
+  font-family:consolas;
+  color:rgb(233,237,236);
+  font-size:16px;
 }
 
 body{
-	background-color:rgb(28,25,35);
+  background-color:rgb(28,25,35);
+  display:flex;
+  flex-direction:column;
 }
 
 button{
-	background-color:rgb(92,243,164);
-	font-family:consolas;
-	font-size:16px;
-	color:black;
+  background-color:rgb(92,243,164);
+  font-family:consolas;
+  font-size:16px;
+  color:black;
 }
 
 a{
-	color:rgb(144,164,248);
-	font-family:consolas;
-	font-size:16px;
+  color:rgb(144,165,248);
+  font-size:16px;
+}
+
+#header{
+  width:100%;
+  background-color:black;
+  padding:1px;
+  margin-bottom:10px;
+}
+
+#header h1{
+  margin:10px;
+}
+
+#header-links{
+  color:rgb(144,165,248);
+  margin:10px;
+}
+
+#header-links a{
+  margin:10px;
+}
+
+.text-center{
+  text-align:center;
+}
+
+#footer-padding{
+  flex: 1 0 auto;
+}
+
+#footer{
+  text-align:center;
+  margin-top:10px;
+  flex-shrink:0;
+}
+
+#footer a h2{
+  background-color:black;
+  padding:10px;
+}
+
+#footer a{
+  text-decoration:none;
+}
+
+@media only screen and (hover: none) and (pointer: coarse){
+  
+  h1{
+    font-size:28px;
+  }
+  
+  h2{
+    font-size:16px;
+  }
+  
+  p,ul,a{
+    font-size:8px;
+  }
+
 }
