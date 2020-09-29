@@ -1,0 +1,27 @@
+Key:
+	I = Individual task
+	M = Meeting task
+
+Tasks-----------------------------------
+
+I1) Finish login 
+
+I2) Spike Rocket Ready Test P1
+
+I3) Research Pi camera/video 
+
+I4) Wifi setup Batch File
+
+I5) Spike Ajax
+
+Optional: 
+
+I6) Spike DNS server
+
+Assignments-----------------------------
+
+Benjamin: I1, I5
+
+Ryan: I6, I2
+
+Peter: I4, I3
