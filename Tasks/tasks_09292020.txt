@@ -14,13 +14,15 @@ I4) Wifi setup Batch File
 
 I5) Spike Ajax
 
+I7) Spike unittest python lib
+
 Optional: 
 
 I6) Spike DNS server
 
 Assignments-----------------------------
 
-Benjamin: I1, I5
+Benjamin: I1, I5, I7
 
 Ryan: I6, I2
 
