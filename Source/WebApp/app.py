@@ -7,13 +7,15 @@
 #Imports and Initialization----------------------------------------------------
 
 from flask import Flask, redirect, url_for, request, render_template, session
-import random, sqlite3
+import random
+from database import *
 from launch import *
 from multiprocessing import Process
 
 app = Flask(__name__)
-
 app.secret_key = b'1\xcd/a\x88\x9fV5\x07|q\x91\xfa`\xc1y'
+
+db_init()
 
 #App routes--------------------------------------------------------------------
 
@@ -59,7 +61,7 @@ def logged_in():
     
     except:
         session['logged_in'] = False
-        return False        
+        return False
 
 if __name__ == '__main__':
     app.run(debug = True)
