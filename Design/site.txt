@@ -1,7 +1,0 @@
-Pages: login.html, launch.html
-
-Landing -> login.html
-
-Admin login -> launch.html
-
-Failed login -> login.html w/ failure condition to display error

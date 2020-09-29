@@ -1,1 +1,3 @@
-Front end css will be dictated by a file titled "standard.css"
+1) Front end css will be dictated by a file titled "standard.css"
+
+2) New html pages will be made from a copy of a file titled "standard.html"
