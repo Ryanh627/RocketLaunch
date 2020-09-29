@@ -1,6 +1,7 @@
 import sqlite3
 from queries import *
 
+DIR = "/home/pi/RocketLaunch/Source/WebApp/"
 DB_NAME = "rocketlaunch.db"
 
 def db_init():
@@ -15,7 +16,7 @@ def db_init():
 
 def db_connect():
     try:
-        con = sqlite3.connect(DB_NAME)
+        con = sqlite3.connect(DIR + DB_NAME)
     except:
         print("An error has occurred!")
 
