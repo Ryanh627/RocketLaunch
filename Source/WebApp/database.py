@@ -25,6 +25,10 @@ def db_connect():
 
 def db_login(username, password):
     try:
+        #Error if username or password is empty
+        if username == "" or password == "":
+            return False
+
         #Connect to database
         con = db_connect()
         db = con.cursor()
@@ -53,6 +57,10 @@ def db_login(username, password):
 
 def db_signup(username, password):
     try:
+        #Error if username or password is empty
+        if username == "" or password == "":
+            return False
+
         #Connect to database
         con = db_connect()
         db = con.cursor()

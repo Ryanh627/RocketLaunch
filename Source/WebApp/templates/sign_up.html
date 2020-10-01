@@ -17,6 +17,12 @@
         <input type = 'submit' class = 'submit'></input>
     </form>
 </div>
+    
+    {% if signup_message != None %}
+    	<h2 class = 'error-text text-center'>{{signup_message}}</h2>
+    {% endif %}
+	
+
     <div id = 'footer-padding'></div>
     <div id = 'footer'>
       <a href = '/login'><h2>Login</h2></a>

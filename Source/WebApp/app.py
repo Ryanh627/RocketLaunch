@@ -47,6 +47,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         if db_login(username, password):
+            session['username'] = username
             return redirect(url_for('mission_control'))
         else:
             login_message = "Login failure. Please try again!"
@@ -55,13 +56,22 @@ def login():
 
 @app.route('/sign_up', methods = ['POST', 'GET'])
 def sign_up():
+    signup_message = None
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        db_signup(username, password)
-        return redirect(url_for('mission_control'))
+        if db_signup(username, password):
+            session['username'] = username
+            return redirect(url_for('mission_control'))
+        else:
+            signup_message = "Sign up failure. Please try again!"
 
-    return render_template('sign_up.html')
+    return render_template('sign_up.html', signup_message = signup_message)
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('login'))
 
 @app.route('/launch')
 def launch():
@@ -72,10 +82,10 @@ def launch():
 #Methods-----------------------------------------------------------------------
 def logged_in():
     try:
-        return session['logged_in']
+        return session['username']
     
     except:
-        session['logged_in'] = False
+        session['username'] = False
         return False
 
 if __name__ == '__main__':
