@@ -24,6 +24,6 @@ Assignments-----------------------------
 
 Benjamin: I1, I5, I7
 
-Ryan: I6, I2
+Ryan: I6, I2, I7
 
-Peter: I4, I3
+Peter: I4, I3, I7

@@ -1,4 +1,4 @@
-import sqlite3
+import sqlite3, secrets, hashlib
 from queries import *
 
 DIR = "/home/pi/RocketLaunch/Source/WebApp/"
@@ -16,9 +16,66 @@ def db_init():
 
 def db_connect():
     try:
-        con = sqlite3.connect(DIR + DB_NAME)
+        con = sqlite3.connect(DIR + DB_NAME, isolation_level = None)
     except:
         print("An error has occurred!")
 
     finally:
         return con
+
+def db_login(username, password):
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+
+        #Get salt for user in database
+        params = [username]
+        fetch = db.execute(QUERY_USERS_GET_SALT, params).fetchone()
+        dbSalt = fetch[0]
+
+        #Generate local hash of password
+        localHash = db_hash(password, dbSalt)
+
+        #Get hash in database
+        params = [username]
+        dbHash = db.execute(QUERY_USERS_GET_PASSWORD, params).fetchone()[0]
+
+        #Close database
+        con.close()
+
+    except:
+        #Login fails if there are any errors
+        return False
+    
+    #Login either fails or doesn't depending on if the hashes match
+    return localHash == dbHash
+
+def db_signup(username, password):
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+
+        #Generate salt for password
+        localSalt = secrets.token_urlsafe(32)
+
+        #Generate hash for password
+        localHash = db_hash(password, localSalt)
+
+        #Insert password hash, username, and salt
+        params = [username, localHash, localSalt]
+        db.execute(QUERY_USERS_INSERT, params)
+
+        #Close database
+        con.close()
+
+        return True
+    
+    except:
+        return False
+
+def db_hash(password, salt):
+    ret = hashlib.sha512((salt + password).encode())
+    ret = ret.digest()
+    return ret

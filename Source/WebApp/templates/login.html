@@ -10,13 +10,19 @@
     </div>
     
     <div class = 'vertical-center-wrapper'>
-    <form class = 'vertical-center-container'>
-        <h1 class = 'text-center'>Login</h1>
-        <input type = 'text' class = 'text-input' placeholder = 'Username'></input>
-        <input type = 'password' class = 'text-input' placeholder = 'Password'></input>
-        <input type = 'submit' class = 'submit'></input>
-    </form>
-</div>
+	<form class = 'vertical-center-container' action = "{{url_for('login')}}"  method = 'POST'>
+        	<h1 class = 'text-center'>Login</h1>
+        	<input type = 'text' class = 'text-input' name = 'username' placeholder = 'Username'></input>
+        	<input type = 'password' class = 'text-input' name = 'password' placeholder = 'Password'></input>
+        	<input type = 'submit' class = 'submit'></input>
+    	</form>
+
+    </div>
+
+    {% if login_message != None %}
+    <h2 class = 'error-text text-center'>{{login_message}}</h2>
+    {% endif %}
+ 
     <div id = 'footer-padding'></div>
     <div id = 'footer'>
       <a href = '/sign_up'><h2>Sign Up</h2></a>

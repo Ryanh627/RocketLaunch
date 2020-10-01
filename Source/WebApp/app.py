@@ -30,7 +30,7 @@ def index():
 def mission_control():
     if not logged_in():
         return redirect(url_for('login'))
-
+    
     return render_template('mission_control.html')
 
 @app.route('/my_account')
@@ -40,12 +40,27 @@ def my_account():
 
     return render_template('my_account.html')
 
-@app.route('/login')
+@app.route('/login', methods = ['POST', 'GET'])
 def login():
-    return render_template('login.html')
+    login_message = None
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if db_login(username, password):
+            return redirect(url_for('mission_control'))
+        else:
+            login_message = "Login failure. Please try again!"
+    
+    return render_template('login.html', login_message = login_message)
 
-@app.route('/sign_up')
+@app.route('/sign_up', methods = ['POST', 'GET'])
 def sign_up():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        db_signup(username, password)
+        return redirect(url_for('mission_control'))
+
     return render_template('sign_up.html')
 
 @app.route('/launch')

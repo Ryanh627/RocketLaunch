@@ -10,10 +10,10 @@
     </div>
     
     <div class = 'vertical-center-wrapper'>
-    <form class = 'vertical-center-container'>
+	    <form class = 'vertical-center-container' action = "{{url_for('sign_up')}}" method = "POST">
         <h1 class = 'text-center'>Sign Up</h1>
-        <input type = 'text' class = 'text-input' placeholder = 'Username'></input>
-        <input type = 'password' class = 'text-input' placeholder = 'Password'></input>
+        <input type = 'text' class = 'text-input' name = 'username' placeholder = 'Username'></input>
+        <input type = 'password' class = 'text-input' name = 'password' placeholder = 'Password'></input>
         <input type = 'submit' class = 'submit'></input>
     </form>
 </div>
