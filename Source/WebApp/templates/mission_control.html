@@ -1,6 +1,8 @@
 <html>
   <head>
+	  <meta http-equiv = "refresh" content = "5">
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/standard.css') }}"</link>
+	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/mission_control.css')}}"</link>
   </head>
    
   <body>
@@ -9,6 +11,26 @@
     </div>
     
     <h1 class = 'text-center'>Mission Control</h1>
+
+    <div class = 'vertical-center-wrapper'>
+    <div class = 'vertical-center-container' id = 'launchpads'>
+      <div class = 'launchpad'>
+        <h2>Pad 1</h2>
+        <h2 class = 'not-ready-text'>Not ready</h2>
+        <button disabled>Launch</button>
+      </div>
+      <div class = 'launchpad'>
+        <h2>Pad 2</h2>
+        <h2 class = 'not-ready-text'>Not ready</h2>
+        <button disabled>Launch</button>
+      </div>
+      <div class = 'launchpad'>
+        <h2>Pad 3</h2>
+        <h2 class = 'not-ready-text'>Not ready</h2>
+        <button disabled>Launch</button>
+      </div>
+    </div>
+</div>
 
     <div id = 'footer-padding'></div>
     <div id = 'footer'>

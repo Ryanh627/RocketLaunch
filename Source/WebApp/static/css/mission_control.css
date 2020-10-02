@@ -1,0 +1,40 @@
+.vertical-center-wrapper{
+  display:flex;
+  justify-content:center;
+  height:100%;
+}
+
+.vertical-center-container{
+  align-self:center;
+}
+
+#launchpads{
+  width:50%;
+}
+
+.launchpad{
+  margin:10px;
+  margin-top:30px;
+  margin-bottom:30px;
+  background-color:black;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+}
+
+.launchpad button{
+  padding:5px;
+  border-radius:5px;
+}
+
+.ready-text{
+  color:rgb(92,243,164);
+}
+
+.not-ready-text{
+  color:rgb(242,86,83);
+}
+
+button[disabled]{
+  background-color:grey;
+}
