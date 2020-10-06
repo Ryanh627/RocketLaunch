@@ -16,6 +16,7 @@ app = Flask(__name__)
 app.secret_key = b'1\xcd/a\x88\x9fV5\x07|q\x91\xfa`\xc1y'
 
 db_init()
+pads = pad_setup()
 
 #App routes--------------------------------------------------------------------
 
@@ -38,7 +39,10 @@ def my_account():
     if not logged_in():
         return redirect(url_for('login'))
 
-    return render_template('my_account.html')
+    for pad in pads:
+        check_connection()
+
+    return render_template('my_account.html', pads)
 
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
@@ -87,6 +91,18 @@ def logged_in():
     except:
         session['username'] = False
         return False
+
+def pad_setup():
+    pads = []
+    stream = open('pad.conf', 'r')
+    lines = stream.readlines()
+    
+    for line in lines:
+        args = line.split(' ')
+        pads.append(Pad(arg[0], arg[1])
+
+    stream.close()
+    return pads
 
 if __name__ == '__main__':
     app.run(debug = True)
