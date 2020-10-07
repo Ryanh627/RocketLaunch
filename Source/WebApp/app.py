@@ -8,6 +8,7 @@
 
 from flask import Flask, redirect, url_for, request, render_template, session
 import random
+import pad
 from database import *
 from launch import *
 from multiprocessing import Process
@@ -32,6 +33,9 @@ def mission_control():
     if not logged_in():
         return redirect(url_for('login'))
     
+    for pad in pads:
+        pad.check_connection()
+
     return render_template('mission_control.html')
 
 @app.route('/my_account')
@@ -39,10 +43,7 @@ def my_account():
     if not logged_in():
         return redirect(url_for('login'))
 
-    for pad in pads:
-        check_connection()
-
-    return render_template('my_account.html', pads)
+    return render_template('my_account.html')
 
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
