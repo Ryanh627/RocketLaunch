@@ -8,7 +8,7 @@
 
 from flask import Flask, redirect, url_for, request, render_template, session
 import random
-import pad
+from pad import *
 from database import *
 from launch import *
 from multiprocessing import Process
@@ -17,7 +17,7 @@ app = Flask(__name__)
 app.secret_key = b'1\xcd/a\x88\x9fV5\x07|q\x91\xfa`\xc1y'
 
 db_init()
-pads = pad_setup()
+pads = pads_setup()
 
 #App routes--------------------------------------------------------------------
 
@@ -36,7 +36,20 @@ def mission_control():
     for pad in pads:
         pad.check_connection()
 
-    return render_template('mission_control.html')
+    return render_template('mission_control.html', pads = pads)
+
+def pads_setup():
+    pads = []
+    stream = open('pad.conf', 'r')
+    lines = stream.readlines()
+    i = 0
+
+    for line in lines:
+        args = line.split(' ')
+        pads.append(Pad('Pad ' + str(i), arg[0], arg[1]))
+
+    stream.close()
+    return pads
 
 @app.route('/my_account')
 def my_account():
@@ -92,18 +105,6 @@ def logged_in():
     except:
         session['username'] = False
         return False
-
-def pad_setup():
-    pads = []
-    stream = open('pad.conf', 'r')
-    lines = stream.readlines()
-    
-    for line in lines:
-        args = line.split(' ')
-        pads.append(Pad(arg[0], arg[1])
-
-    stream.close()
-    return pads
 
 if __name__ == '__main__':
     app.run(debug = True)

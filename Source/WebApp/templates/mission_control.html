@@ -14,29 +14,19 @@
 
     <div class = 'vertical-center-wrapper'>
     <div class = 'vertical-center-container' id = 'launchpads'>
-
-      <div class = 'launchpad'>
-        <h2>Test Circuit Button</h2>
-        <h2 class = 'not-ready-text'>Not ready</h2>
-	<input type="button" id="script" value="Run Script" onlick="exc('python CircuitChecker.py');">
-        <button disabled>Test Circuit</button>
-      </div>
-
-      <div class = 'launchpad'>
-        <h2>Pad 1</h2>
-        <h2 class = 'not-ready-text'>Not ready</h2>
-        <button disabled>Launch</button>
-      </div>
-      <div class = 'launchpad'>
-        <h2>Pad 2</h2>
-        <h2 class = 'not-ready-text'>Not ready</h2>
-        <button disabled>Launch</button>
-      </div>
-      <div class = 'launchpad'>
-        <h2>Pad 3</h2>
-        <h2 class = 'not-ready-text'>Not ready</h2>
-        <button disabled>Launch</button>
-      </div>
+	
+      	{% for pad in pads %}
+		<div class = 'launchpad'>
+			<h2>{{pad.name}}</h2>
+			{% if pad.connected %}
+				<h2 class = 'ready-text'>Ready</h2>
+				<button disabled>Launch</button>
+			{% else %}
+				<h2 class = 'not-ready-text'>Not ready</h2>
+				<button>Launch</button>
+			{% endif %}
+		</div>
+	{% endfor %}
     </div>
 </div>
 
