@@ -32,24 +32,34 @@ def index():
 def mission_control():
     if not logged_in():
         return redirect(url_for('login'))
-    
+
     for pad in pads:
         pad.check_connection()
 
     return render_template('mission_control.html', pads = pads)
 
-def pads_setup():
-    pads = []
-    stream = open('pad.conf', 'r')
-    lines = stream.readlines()
-    i = 0
+@app.route('/mission_control/<padselect>', methods = ['POST', 'GET'])
+def pad_selection(padselect):
+    if not logged_in():
+        return redirect(url_for('login'))
 
-    for line in lines:
-        args = line.split(' ')
-        pads.append(Pad('Pad ' + str(i), arg[0], arg[1]))
+    if request.method != 'POST':
+        return redirect(url_for('mission_control'))
 
-    stream.close()
-    return pads
+    if 'selectedpads' not in session:
+        session['selectedpads'] = []
+
+    if padselect == 'select':
+        pad = request.form['select']
+        session['selectedpads'].append(pad)
+        session.modified = True
+
+    elif padselect == 'deselect':
+        pad = request.form['deselect']
+        session['selectedpads'].remove(pad)
+        session.modified = True
+
+    return redirect(url_for('mission_control'))
 
 @app.route('/my_account')
 def my_account():
@@ -104,6 +114,19 @@ def logged_in():
     
     except:
         session['username'] = False
+        return False
+
+def get_pad(name):
+    for pad in pads:
+        if pad.name == name:
+            return pad
+    return None
+
+def verify(val):
+    try:
+        value = val
+        return True
+    except:
         return False
 
 if __name__ == '__main__':

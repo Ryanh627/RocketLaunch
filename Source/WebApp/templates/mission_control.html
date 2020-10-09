@@ -1,6 +1,6 @@
 <html>
   <head>
-	  <meta http-equiv = "refresh" content = "5">
+	  <meta http-equiv = "refresh" content = "500">
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/standard.css') }}"</link>
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/mission_control.css')}}"</link>
   </head>
@@ -14,19 +14,40 @@
 
     <div class = 'vertical-center-wrapper'>
     <div class = 'vertical-center-container' id = 'launchpads'>
-	
-      	{% for pad in pads %}
+      			
+		{% for pad in pads %}
+		{% if pad.name in session['selectedpads'] %}
+		<div class = 'launchpad border-green'>
+		
+		{% else %}
 		<div class = 'launchpad'>
+
+		{% endif %}
 			<h2>{{pad.name}}</h2>
+
 			{% if pad.connected %}
 				<h2 class = 'ready-text'>Ready</h2>
-				<button disabled>Launch</button>
+				{% if pad.name in session['selectedpads'] %}
+				<form action = '/mission_control/deselect' method = 'POST'>
+					<input type = 'hidden' name = 'deselect' value = '{{pad.name}}'></input>
+					<button type = 'submit' value = 'submit'>Deselect</button>
+				</form>
+				{% else %}
+				<form action = '/mission_control/select' method = 'POST'>
+					<input type = 'hidden' name = 'select' value = '{{pad.name}}'></input>
+					<button type = 'submit' value = 'submit'>Select</button>
+				</form>
+				{% endif %}
 			{% else %}
 				<h2 class = 'not-ready-text'>Not ready</h2>
-				<button>Launch</button>
+				{% if pad.name in session['selectedpads'] %}
+					<button disabled>Deselect</button>
+				{% else %}
+					<button disabled>Select</button>
+				{% endif %}
 			{% endif %}
 		</div>
-	{% endfor %}
+		{% endfor %}
     </div>
 </div>
 
