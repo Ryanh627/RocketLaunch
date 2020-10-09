@@ -10,6 +10,9 @@ class Pad:
     def check_connection(self):
         self.connected = True
 
+    def launch(self):
+        print("Launched " + self.name)
+
 #Construct a list of pad objects from the pad configuration file
 def pads_setup():
     #Create empty list and open pad configuration file

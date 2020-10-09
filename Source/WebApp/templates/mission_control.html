@@ -1,6 +1,6 @@
 <html>
   <head>
-	  <meta http-equiv = "refresh" content = "500">
+	  <meta http-equiv = "refresh" content = "5">
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/standard.css') }}"</link>
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/mission_control.css')}}"</link>
   </head>
@@ -48,6 +48,15 @@
 			{% endif %}
 		</div>
 		{% endfor %}
+		
+		<form action = '/launch' method = 'POST'>
+			{% if session['selectedpads']|length > 0 %}
+			<button class = 'launch-btn' type = 'submit' value = 'submit'>Launch</button>
+			{% else %}
+			<button disabled class = 'launch-btn' type = 'submit' value = 'submit'>Launch</button>
+			{% endif %}
+		</form>
+
     </div>
 </div>
 

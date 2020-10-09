@@ -46,3 +46,10 @@
 button[disabled]{
   background-color:grey;
 }
+
+.launch-btn{
+  width:96%;
+  margin-left:2%;
+  padding:10px;
+  border-radius:5px;
+}

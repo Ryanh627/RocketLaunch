@@ -10,7 +10,6 @@ from flask import Flask, redirect, url_for, request, render_template, session
 import random
 from pad import *
 from database import *
-from launch import *
 from multiprocessing import Process
 
 app = Flask(__name__)
@@ -38,8 +37,8 @@ def mission_control():
 
     return render_template('mission_control.html', pads = pads)
 
-@app.route('/mission_control/<padselect>', methods = ['POST', 'GET'])
-def pad_selection(padselect):
+@app.route('/mission_control/<option>', methods = ['POST', 'GET'])
+def pad_selection(option):
     if not logged_in():
         return redirect(url_for('login'))
 
@@ -49,12 +48,12 @@ def pad_selection(padselect):
     if 'selectedpads' not in session:
         session['selectedpads'] = []
 
-    if padselect == 'select':
+    if option == 'select':
         pad = request.form['select']
         session['selectedpads'].append(pad)
         session.modified = True
 
-    elif padselect == 'deselect':
+    elif option == 'deselect':
         pad = request.form['deselect']
         session['selectedpads'].remove(pad)
         session.modified = True
@@ -98,14 +97,19 @@ def sign_up():
 
 @app.route('/logout')
 def logout():
-    session.pop('username', None)
+    session.clear()
     return redirect(url_for('login'))
 
-@app.route('/launch')
+@app.route('/launch', methods = ['POST', 'GET'])
 def launch():
-    p = Process(target = test)
-    p.start()
-    return "Launched"
+    if request.method == 'POST':
+        for pad in pads:
+            if pad.name in session['selectedpads'] and pad.connected:
+                pad.launch()
+
+        session.pop('selectedpads', None)
+
+    return redirect(url_for('mission_control'))
 
 #Methods-----------------------------------------------------------------------
 def logged_in():
@@ -121,13 +125,6 @@ def get_pad(name):
         if pad.name == name:
             return pad
     return None
-
-def verify(val):
-    try:
-        value = val
-        return True
-    except:
-        return False
 
 if __name__ == '__main__':
     app.run(debug = True)
