@@ -1,0 +1,23 @@
+Key:
+	I = Individual task
+	M = Meeting task
+
+Tasks-----------------------------------
+
+I1) Re-test relays with PinOuts
+I2) Finalize circuit design
+I3) Launch script
+I4) My Account page
+I5) Integrate check_connection() code
+I6) Fix pad.conf apache bug
+I7) Admin vs. User Differentiation\
+I8) Design video page
+
+
+Assignments-----------------------------
+
+Benjamin: I4, I6, I7
+
+Ryan: I5, I8
+
+Peter: I1, I2, I3
