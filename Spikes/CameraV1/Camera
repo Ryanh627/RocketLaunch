@@ -1,0 +1,8 @@
+Using Raspberry Pi Camera Module V2 and the tutorial at this
+link: 
+https://projects.raspberrypi.org/en/projects/getting-started-with-picamera
+
+Recording and saving of files at various resolutions and 
+framerates was completed. The .py file found in this same 
+directory contains the Python code with comments explaining 
+the purpose of each line. 
