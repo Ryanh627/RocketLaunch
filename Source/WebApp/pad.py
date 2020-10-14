@@ -17,7 +17,7 @@ class Pad:
 def pads_setup():
     #Create empty list and open pad configuration file
     pads = []
-    stream = open('pad.conf', 'r')
+    stream = open('/home/pi/RocketLaunch/Source/WebApp/pad.conf', 'r')
 
     #Skip first line, read all lines into a list, initialize index
     next(stream)
