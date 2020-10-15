@@ -11,7 +11,7 @@
     </div>
     
     <h1 class = 'text-center'>My Account</h1>
-    <h2 class = 'text-center'>Logged in as: {{session['username']}}</h2>
+    <p class = 'text-center'>Logged in as: {{session['username']}}</p>
 	
     <div class = 'vertical-center-wrapper'>
     	<div class = 'vertical-center-container'>
@@ -36,8 +36,7 @@
 		<br>
 		<br>
 
-		<form action = '/my_account' method = 'POST'>
-			<input type = 'hidden' name = 'type' value = 'delete'></input>
+		<form action = '/delete' method = 'POST'>
 			<button class = 'delete-account' type = 'submit' value = 'submit'>Delete Account</button>
 		</form>
 

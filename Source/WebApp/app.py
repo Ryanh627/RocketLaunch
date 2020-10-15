@@ -123,9 +123,13 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
-@app.route('/delete')
+@app.route('/delete', methods = ['POST', 'GET'])
 def delete():
-    return redirect(url_for('delete'))
+    if request.method == 'POST':
+        db_delete(session['username'])
+        session.clear()
+
+    return redirect(url_for('login'))
 
 @app.route('/launch', methods = ['POST', 'GET'])
 def launch():

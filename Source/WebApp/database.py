@@ -98,6 +98,18 @@ def db_signup(username, password):
     except:
         return False, False
 
+def db_delete(username):
+    #Connect to database
+    con = db_connect()
+    db = con.cursor()
+
+    #Delete user from USERS table
+    params = [username]
+    db.execute(QUERY_USERS_DELETE, params)
+
+    #Close database
+    con.close()
+
 def db_hash(password, salt):
     ret = hashlib.sha512((salt + password).encode())
     ret = ret.digest()
