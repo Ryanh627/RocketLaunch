@@ -1,6 +1,8 @@
 <html>
   <head>
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/standard.css') }}"</link>
+	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/forms.css') }}"</link>
+	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/my_account.css') }}"</link>
   </head>
    
   <body>
@@ -9,11 +11,47 @@
     </div>
     
     <h1 class = 'text-center'>My Account</h1>
+    <h2 class = 'text-center'>Logged in as: {{session['username']}}</h2>
+	
+    <div class = 'vertical-center-wrapper'>
+    	<div class = 'vertical-center-container'>
+    		<h2 class = 'text-center'>Change Username</h2>
+    		<form action = '/my_account' method = 'POST'>
+			<input class = 'text-input' type = 'text' placeholder = 'Current Username' name = 'current'></input>
+	    		<input class = 'text-input' type = 'text' placeholder = 'New Username' name = 'new'></input>
+			<input type = 'hidden' name = 'type' value = 'username'></input>
+			<button class = 'submit' type = 'submit' value = 'submit'>Submit</button>
+    		</form>
+		<br>
+		
+    		<h2 class = 'text-center'>Change Password</h2>
+		<form action = 'my_account' method = 'POST'>
+			<input class = 'text-input' type = 'password' placeholder = 'Current Password' name = 'current'></input>
+			<input class = 'text-input' type = 'password' placeholder = 'New Password' name = 'new'></input>
+			<input type = 'hidden' name = 'type' value = 'password'></input>
+			<button class = 'submit' type = 'submit' value = 'submit'>Submit</button>
+		</form>
+		
+		{% if not session['admin'] %}
+		<br>
+		<br>
+
+		<form action = '/my_account' method = 'POST'>
+			<input type = 'hidden' name = 'type' value = 'delete'></input>
+			<button class = 'delete-account' type = 'submit' value = 'submit'>Delete Account</button>
+		</form>
+
+		{% endif %}
+	</div>
+    </div>
 
     <div id = 'footer-padding'></div>
     <div id = 'footer'>
-      <a href = '/mission_control'><h2>Mission Control</h2></a>
-      <a href = '/logout'><h2 id = 'footer_logout'>Logout</h2></a>
+	{% if session['admin'] %}
+	<a href = '/mission_control'><h2>Mission Control</h2></a>
+	{% endif %}
+
+      	<a href = '/logout'><h2 id = 'footer_logout'>Logout</h2></a>
     </div>
   </body>
 </html>

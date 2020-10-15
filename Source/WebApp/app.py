@@ -32,6 +32,9 @@ def mission_control():
     if not logged_in():
         return redirect(url_for('login'))
 
+    if not is_admin():
+        return redirect(url_for('my_account'))
+
     for pad in pads:
         pad.check_connection()
 
@@ -73,9 +76,19 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if db_login(username, password):
+        success, admin = db_login(username, password)
+            
+        if success:
             session['username'] = username
-            return redirect(url_for('mission_control'))
+
+            session['admin'] = admin
+            
+            if session['admin']:
+                return redirect(url_for('mission_control'))
+
+            else:
+                return redirect(url_for('my_account'))
+        
         else:
             login_message = "Login failure. Please try again!"
     
@@ -87,9 +100,19 @@ def sign_up():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if db_signup(username, password):
+        success, admin = db_signup(username, password)
+
+        if success:
             session['username'] = username
-            return redirect(url_for('mission_control'))
+            
+            session['admin'] = admin
+
+            if session['admin']:
+                return redirect(url_for('mission_control'))
+
+            else:
+                return redirect(url_for('my_account'))
+
         else:
             signup_message = "Sign up failure. Please try again!"
 
@@ -99,6 +122,10 @@ def sign_up():
 def logout():
     session.clear()
     return redirect(url_for('login'))
+
+@app.route('/delete')
+def delete():
+    return redirect(url_for('delete'))
 
 @app.route('/launch', methods = ['POST', 'GET'])
 def launch():
@@ -114,11 +141,20 @@ def launch():
 #Methods-----------------------------------------------------------------------
 def logged_in():
     try:
-        return session['username']
-    
+        val = session['username']
+        return True
+
     except:
-        session['username'] = False
         return False
+
+def is_admin():
+    if 'username' not in session:
+        return False
+
+    if 'admin' not in session:
+        return False
+
+    return session['admin']
 
 def get_pad(name):
     for pad in pads:

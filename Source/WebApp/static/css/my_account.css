@@ -1,0 +1,11 @@
+.delete-account{
+  background-color:rgb(242,86,83);
+  font-family:consolas;
+  font-size:16px;
+  color:black;
+  margin-left:auto;
+  margin-right:auto;
+  display:block;
+  padding:5px;
+  border-radius:5px;
+}
