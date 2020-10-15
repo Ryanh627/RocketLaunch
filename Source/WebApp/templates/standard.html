@@ -7,7 +7,17 @@
     <div id = 'header'>
       <h1 class = 'text-center'>Raspberry Pi Virtual Launchpad</h1>
     </div>
-    
+
+{% if 'success' in session %}
+	<h2 class = 'success-text text-center'>{{session['success']}}</h2>
+	<p hidden>{{session.pop('success')}}</p>
+{% endif %}
+
+{% if 'error' in session %}
+	<h2 class = 'error-text text-center'>{{session['error']}}</h2>
+	<p hidden>{{session.pop('error')}}</p>
+{% endif %}
+
     <div id = 'footer-padding'></div>
     <div id = 'footer'>
       <a href = '/sign_up'><h2>Sign Up</h2></a>

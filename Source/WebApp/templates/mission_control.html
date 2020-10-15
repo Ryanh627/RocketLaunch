@@ -60,6 +60,16 @@
     </div>
 </div>
 
+{% if 'success' in session %}
+	<h2 class = 'success-text text-center'>{{session['success']}}</h2>
+	<p hidden>{{session.pop('success')}}</p>
+{% endif %}
+
+{% if 'error' in session %}
+	<h2 class = 'error-text text-center'>{{session['error']}}</h2>
+	<p hidden>{{session.pop('error')}}</p>
+{% endif %}
+
     <div id = 'footer-padding'></div>
     <div id = 'footer'>
       <a href = '/my_account'><h2>My Account</h2></a>

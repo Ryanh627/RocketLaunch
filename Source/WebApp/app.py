@@ -81,9 +81,15 @@ def changeUserInfo(option):
     if option == "change_username":
         if db_change_username(session['username'], request.form['current'], request.form['new']):
             session['username'] = request.form['new']
+            session['success'] = "Username changed!"
+        else:
+            session['error'] = "Failed to change username!"
 
     elif option == "change_password":
-        db_change_password(session['username'], request.form['current'], request.form['new'])
+        if db_change_password(session['username'], request.form['current'], request.form['new']):
+            session['success'] = "Password changed!"
+        else:
+            session['error'] = "Failed to change password!"
 
     else:
         return redirect(url_for('my_account'))
@@ -92,7 +98,6 @@ def changeUserInfo(option):
 
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
-    login_message = None
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -100,7 +105,7 @@ def login():
             
         if success:
             session['username'] = username
-
+            session['success'] = "Logged in successfully! Welcome, " + username + "!"
             session['admin'] = admin
             
             if session['admin']:
@@ -110,13 +115,12 @@ def login():
                 return redirect(url_for('my_account'))
         
         else:
-            login_message = "Login failure. Please try again!"
+            session['error'] = "Login failure. Please try again!"
     
-    return render_template('login.html', login_message = login_message)
+    return render_template('login.html')
 
 @app.route('/sign_up', methods = ['POST', 'GET'])
 def sign_up():
-    signup_message = None
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -124,7 +128,7 @@ def sign_up():
 
         if success:
             session['username'] = username
-            
+            session['success'] = "Signed up successfully! Welcome, " + username + "!"
             session['admin'] = admin
 
             if session['admin']:
@@ -134,9 +138,9 @@ def sign_up():
                 return redirect(url_for('my_account'))
 
         else:
-            signup_message = "Sign up failure. Please try again!"
+            session['error'] = "Sign up failure. Please try again!"
 
-    return render_template('sign_up.html', signup_message = signup_message)
+    return render_template('sign_up.html')
 
 @app.route('/logout')
 def logout():

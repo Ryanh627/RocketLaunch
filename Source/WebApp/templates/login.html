@@ -19,8 +19,14 @@
 
     </div>
 
-    {% if login_message != None %}
-    <h2 class = 'error-text text-center'>{{login_message}}</h2>
+    {% if 'success' in session %}
+	<h2 class = 'success-text text-center'>{{session['success']}}</h2>
+	<p hidden>{{session.pop('success')}}</p>
+    {% endif %}
+
+    {% if 'error' in session %}
+	<h2 class = 'error-text text-center'>{{session['error']}}</h2>
+	<p hidden>{{session.pop('error')}}</p>
     {% endif %}
  
     <div id = 'footer-padding'></div>
