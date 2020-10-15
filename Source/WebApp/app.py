@@ -70,6 +70,26 @@ def my_account():
 
     return render_template('my_account.html')
 
+@app.route('/my_account/<option>', methods = ['POST', 'GET'])
+def changeUserInfo(option):
+    if not logged_in():
+        return redirect(url_for('login'))
+
+    if request.method != 'POST':
+        return redirect(url_for('my_account'))
+
+    if option == "change_username":
+        if db_change_username(session['username'], request.form['current'], request.form['new']):
+            session['username'] = request.form['new']
+
+    elif option == "change_password":
+        db_change_password(session['username'], request.form['current'], request.form['new'])
+
+    else:
+        return redirect(url_for('my_account'))
+
+    return redirect(url_for('my_account'))
+
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
     login_message = None

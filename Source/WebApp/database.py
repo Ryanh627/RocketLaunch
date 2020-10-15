@@ -61,6 +61,8 @@ def db_login(username, password):
 
     except:
         #Login fails if there are any errors
+        if con is not None:
+            con.close()
         return False, False
     
     #Login either fails or doesn't depending on if the hashes match
@@ -96,19 +98,101 @@ def db_signup(username, password):
         return True, admin
 
     except:
+        if con is not None:
+            con.close()
         return False, False
 
+def db_change_password(username, current_password, new_password):
+    #Error if current or new password are empty
+    if current_password == "" or new_password == "":
+        return False
+
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+
+        #Get salt for user in database
+        params = [username]
+        fetch = db.execute(QUERY_USERS_GET_SALT, params).fetchone()
+        dbSalt = fetch[0]
+
+        #Generate local hash of password
+        localHash = db_hash(current_password, dbSalt)
+
+        #Get hash in database
+        params = [username]
+        dbHash = db.execute(QUERY_USERS_GET_PASSWORD, params).fetchone()[0]
+        
+        #Error if passwords do not match
+        if localHash != dbHash:
+            return False
+        
+        #Generate new password hash
+        localHash = db_hash(new_password, dbSalt)
+
+        #Update hash in database
+        params = [localHash, username]
+        db.execute(QUERY_USERS_UPDATE_PASSWORD, params)
+        
+        #Close database
+        con.close()
+
+        return True
+
+    except:
+        if con is not None:
+            con.close()
+        return False
+
+def db_change_username(actual_username, current_username, new_username):
+    #Error if current or new username are empty
+    if current_username == "" or new_username == "":
+        return False
+
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+        
+        #Error if actual_username and current_username do not match
+        if actual_username != current_username:
+            return False
+
+        #Update username in database
+        params = [new_username, actual_username]
+        db.execute(QUERY_USERS_UPDATE_USERNAME, params)
+
+        #Close database
+        con.close()
+
+        return True
+
+    except:
+        if con is not None:
+            con.close()
+        return False
+ 
+
 def db_delete(username):
-    #Connect to database
-    con = db_connect()
-    db = con.cursor()
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
 
-    #Delete user from USERS table
-    params = [username]
-    db.execute(QUERY_USERS_DELETE, params)
+        #Delete user from USERS table
+        params = [username]
+        db.execute(QUERY_USERS_DELETE, params)
 
-    #Close database
-    con.close()
+        #Close database
+        con.close()
+
+        return True
+
+    except:
+        if con is not None:
+            con.close()
+        return False
 
 def db_hash(password, salt):
     ret = hashlib.sha512((salt + password).encode())
