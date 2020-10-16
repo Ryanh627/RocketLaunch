@@ -1,0 +1,5 @@
+XYGStudy 3 Relay Pi hat required pins:
+
+GPIO pin 37 (P25) controls Relay 1.
+GPIO pin 38 (P28) controls Relay 2.
+GPIO pin 40 (P29) controls Relay 3.
