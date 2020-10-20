@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
-GPIO.setmode(GPIO.BCM)
+import time
 GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
 
 class Pad:
     #Constructor
@@ -13,7 +14,7 @@ class Pad:
     #Update connection field by checking physical rocket port connection
     def check_connection(self):
         GPIOpin = self.pinIn
-        GPIO.setup(GPIOpin, GPIO.In, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(GPIOpin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         state = GPIO.input(GPIOpin)
         if state == False:
             self.connected = True
@@ -23,6 +24,11 @@ class Pad:
         GPIO.cleanup(GPIOpin)
 
     def launch(self):
+        GPIO.setup(self.pinOut,GPIO.OUT) 
+        GPIO.output(self.pinOut,GPIO.HIGH) 
+        GPIO.output(self.pinOut,GPIO.LOW)
+        time.sleep(1)
+        #GPIO.output(self.pinOut,GPIO.HIGH) 
         print("Launched " + self.name)
 
 #Construct a list of pad objects from the pad configuration file
@@ -44,7 +50,7 @@ def pads_setup():
         args = line.split('\t')
 
         #Create pad object, add to list, iterate index
-        pad = Pad('Pad ' + str(i), args[0], args[1])
+        pad = Pad('Pad ' + str(i), int(args[0]), int(args[1]))
         pads.append(pad)
         i = i + 1
     
