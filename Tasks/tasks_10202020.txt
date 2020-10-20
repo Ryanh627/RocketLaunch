@@ -1,0 +1,21 @@
+Key:
+	I = Individual task
+	M = Meeting task
+
+Tasks-----------------------------------
+
+I1) Finalize circuit
+
+I2) Make web pages responsive to mobile devices
+
+I3) Implement redirect state table
+
+I4) Delete account confirmation OR general confirmation page
+
+Assignments-----------------------------
+
+Benjamin: I2, I3, I4
+
+Ryan: I1
+
+Peter: I1
