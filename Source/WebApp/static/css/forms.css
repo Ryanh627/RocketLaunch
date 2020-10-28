@@ -1,11 +1,11 @@
 :root{
-	--largefont-desktop:36px;
-	--mediumfont-desktop:24px;
-	--smallfont-desktop:16px;
-	--largefont-phone:96px;
+	--largefont-desk:36px;
+	--mediumfont-desk:24px;
+	--smallfont-desk:16px;
+	--largefont-phone:72px;
 	--mediumfont-phone:64px;
-	--smallfont-phone:32px;
-	--padding-desktop:5px;
+	--smallfont-phone:36px;
+	--padding-desk:10px;
 	--padding-phone:20px;
 }
 
@@ -14,8 +14,9 @@
   display:block;
   margin-left:auto;
   margin-right:auto;
-  padding:var(--padding-desktop);
+  padding:var(--padding-desk);
   border-radius:5px;
+  width:100%;
 }
 
 .vertical-center-wrapper{
@@ -34,18 +35,7 @@
   margin-left:auto;
   margin-right:auto;
   display:block;
-  padding:var(--padding-desktop);
+  padding:var(--padding-desk);
   border-radius:5px;
-}
-
-@media only screen and (hover: none) and (pointer: coarse){
-  
-  .text-input{
-	font-size:var(--smallfont-phone);
-  }
-
-  .submit{
-	font-size:var(--smallfont-phone);
-  }
-
+  width:100%;
 }

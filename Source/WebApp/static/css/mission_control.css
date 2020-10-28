@@ -1,3 +1,14 @@
+:root{
+	--largefont-desk:36px;
+	--mediumfont-desk:24px;
+	--smallfont-desk:16px;
+	--largefont-phone:72px;
+	--mediumfont-phone:64px;
+	--smallfont-phone:36px;
+	--padding-desk:10px;
+	--padding-phone:20px;
+}
+
 .vertical-center-wrapper{
   display:flex;
   justify-content:center;
@@ -31,7 +42,7 @@
 }
 
 .launchpad button{
-  padding:5px;
+  padding:var(--padding-desk);
   border-radius:5px;
 }
 
@@ -50,14 +61,6 @@ button[disabled]{
 .launch-btn{
   width:96%;
   margin-left:2%;
-  padding:10px;
+  padding:var(--padding-desk);
   border-radius:5px;
-}
-
-@media only screen and (hover: none) and (pointer: coarse){
-
-	#launchpads{
-		width:100%;
-	}	
-
 }

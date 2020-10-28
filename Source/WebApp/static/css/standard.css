@@ -1,11 +1,12 @@
 :root{
-	--largefont-desktop:36px;
-	--mediumfont-desktop:24px;
-	--smallfont-desktop:16px;
-	--largefont-phone:96px;
+	--largefont-desk:36px;
+	--mediumfont-desk:24px;
+	--smallfont-desk:16px;
+	--largefont-phone:72px;
 	--mediumfont-phone:64px;
-	--smallfont-phone:32px;
-
+	--smallfont-phone:36px;
+	--padding-desk:10px;
+	--padding-phone:20px;
 }
 
 html,body{
@@ -19,19 +20,19 @@ html,body{
 h1{
   font-family:consolas;
   color:rgb(92,243,164);
-  font-size:var(--largefont-desktop);
+  font-size:var(--largefont-desk);
 }
 
 h2{
   font-family:consolas;
   color:rgb(144,165,248);
-  font-size:var(--mediumfont-desktop);
+  font-size:var(--mediumfont-desk);
 }
 
 p,ul{
   font-family:consolas;
   color:rgb(233,237,236);
-  font-size:var(--smallfont-desktop);
+  font-size:var(--smallfont-desk);
 }
 
 body{
@@ -43,13 +44,13 @@ body{
 button{
   background-color:rgb(92,243,164);
   font-family:consolas;
-  font-size:var(--smallfont-desktop);
+  font-size:var(--smallfont-desk);
   color:black;
 }
 
 a{
   color:rgb(144,165,248);
-  font-size:var(--smallfont-desktop);
+  font-size:var(--smallfont-desk);
 }
 
 #header{
@@ -87,7 +88,7 @@ a{
 
 #footer a h2{
   background-color:black;
-  padding:10px;
+  padding:var(--padding-desk);
   margin-bottom:0px;
 }
 
@@ -107,17 +108,6 @@ a{
   color:rgb(92, 243, 164);
 }
 
-@media only screen and (hover: none) and (pointer: coarse){
-  
-  h1{
-    font-size:var(--largefont-phone);
-  }
-  
-  h2{
-    font-size:var(--mediumfont-phone);
-  }
-  
-  p,ul,a{
-    font-size:var(--smallfont-phone);
-  }
+.title{
+  margin-top:100px;
 }

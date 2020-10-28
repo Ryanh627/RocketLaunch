@@ -1,11 +1,23 @@
+:root{
+	--largefont-desk:36px;
+	--mediumfont-desk:24px;
+	--smallfont-desk:16px;
+	--largefont-phone:72px;
+	--mediumfont-phone:64px;
+	--smallfont-phone:36px;
+	--padding-desk:10px;
+	--padding-phone:20px;
+}
+
 .delete-account{
   background-color:rgb(242,86,83);
   font-family:consolas;
-  font-size:16px;
+  font-size:var(--smallfont-desk);
   color:black;
   margin-left:auto;
   margin-right:auto;
   display:block;
-  padding:5px;
+  padding:var(--padding-desk);
   border-radius:5px;
+  width:100%;
 }
