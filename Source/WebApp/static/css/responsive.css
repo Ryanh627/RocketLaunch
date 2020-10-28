@@ -2,58 +2,17 @@
 	--largefont-desk:36px;
 	--mediumfont-desk:24px;
 	--smallfont-desk:16px;
-	--largefont-phone:96px;
-	--mediumfont-phone:64px;
-	--smallfont-phone:32px;
 	--padding-desk:10px;
-	--padding-phone:20px;
 }
 
 @media only screen and (hover: none) and (pointer: coarse){
-	
-	h1{
-    		font-size:var(--largefont-phone);
-  	}
-  
-  	h2{
-    		font-size:var(--mediumfont-phone);
-  	}
-  
-  	p,ul,a{
-    		font-size:var(--smallfont-phone);
-  	}
-
 
 	#launchpads{
 		width:100%;
 	}
-
-	.launch-btn{
-		font-size:var(--smallfont-phone);
-		padding:var(--padding-phone);
-		border-radius:10px;
-	}	
-
-	.launchpad button{
-		font-size:var(--smallfont-phone);
-		padding:var(--padding-phone);
-		border-radius:20px;
+	
+	.title{
+		margin-top:50px;
 	}
 
-	.text-input{
-		font-size:var(--smallfont-phone);
-		padding:var(--padding-phone);
-  	}
-
-  	.submit{
-		font-size:var(--smallfont-phone);
-		border-radius:20px;
-		padding:var(--padding-phone);
-  	}
-
-	.delete-account{
-		font-size:var(--smallfont-phone);
-		padding:var(--padding-phone);
-		border-radius:20px;
-	}
 }

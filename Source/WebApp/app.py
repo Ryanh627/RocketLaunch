@@ -145,6 +145,7 @@ def sign_up():
 @app.route('/logout')
 def logout():
     session.clear()
+    session['error'] = "Logged out!"
     return redirect(url_for('login'))
 
 @app.route('/delete', methods = ['POST', 'GET'])
@@ -152,6 +153,7 @@ def delete():
     if request.method == 'POST':
         db_delete(session['username'])
         session.clear()
+        session['error'] = "Deleted account!"
 
     return redirect(url_for('login'))
 

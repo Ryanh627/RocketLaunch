@@ -1,9 +1,11 @@
 <html>
   <head>
+	  <meta name = 'viewport' content = 'width=device-width, initial-scale=1'>
+
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/standard.css') }}"></link>
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/forms.css') }}"></link>
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/my_account.css') }}"></link>
-	  <link rel = 'stylesheet' href = "{{url_for('static', filename = 'css/responsive.css')}}"></link>
+	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/responsive.css')}}"></link>
 
   </head>
    
@@ -12,7 +14,7 @@
       <h1 class = 'text-center'>Raspberry Pi Virtual Launchpad</h1>
     </div>
     
-    <h1 class = 'text-center'>My Account</h1>
+    <h1 class = 'text-center title'>My Account</h1>
     <p class = 'text-center'>Logged in as: {{session['username']}}</p>
 	
     <div class = 'vertical-center-wrapper'>
@@ -47,12 +49,12 @@
     </div>
 
 {% if 'success' in session %}
-	<h2 class = 'success-text text-center'>{{session['success']}}</h2>
+	<p class = 'success-text text-center'>{{session['success']}}</p>
 	<p hidden>{{session.pop('success')}}</p>
 {% endif %}
 
 {% if 'error' in session %}
-	<h2 class = 'error-text text-center'>{{session['error']}}</h2>
+	<p class = 'error-text text-center'>{{session['error']}}</p>
 	<p hidden>{{session.pop('error')}}</p>
 {% endif %}
 
