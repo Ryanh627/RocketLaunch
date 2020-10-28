@@ -53,3 +53,11 @@ button[disabled]{
   padding:10px;
   border-radius:5px;
 }
+
+@media only screen and (hover: none) and (pointer: coarse){
+
+	#launchpads{
+		width:100%;
+	}	
+
+}

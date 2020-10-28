@@ -1,9 +1,20 @@
+:root{
+	--largefont-desktop:36px;
+	--mediumfont-desktop:24px;
+	--smallfont-desktop:16px;
+	--largefont-phone:96px;
+	--mediumfont-phone:64px;
+	--smallfont-phone:32px;
+	--padding-desktop:5px;
+	--padding-phone:20px;
+}
+
 .text-input{
   margin:10px;
   display:block;
   margin-left:auto;
   margin-right:auto;
-  padding:5px;
+  padding:var(--padding-desktop);
   border-radius:5px;
 }
 
@@ -19,12 +30,22 @@
 
 .submit{
   background-color:rgb(92,243,164);
-  font-family:consolas;
-  font-size:16px;
   color:black;
   margin-left:auto;
   margin-right:auto;
   display:block;
-  padding:5px;
+  padding:var(--padding-desktop);
   border-radius:5px;
+}
+
+@media only screen and (hover: none) and (pointer: coarse){
+  
+  .text-input{
+	font-size:var(--smallfont-phone);
+  }
+
+  .submit{
+	font-size:var(--smallfont-phone);
+  }
+
 }
