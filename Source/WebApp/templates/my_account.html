@@ -22,13 +22,14 @@
 		<div>
 		<h2 class = 'text-center'>Change Profile Picture</h2>
 		<img src = {{picture}} id = 'picture'></img>
-		<form action = '/picture_upload', method = 'POST' enctype = 'multipart/form-data'>
-			<button class = 'file-upload'>
+		<button class = 'file-upload'>
 				<label for = 'file-upload' class = 'file-upload-label'>
 					Upload
 				</label>
 			</button>
-			<input hidden type = 'file' name = 'file' id = 'file-upload'></input>
+
+		<form action = '/picture_upload', method = 'POST' enctype = 'multipart/form-data'>
+			<input hidden type = 'file' name = 'file' id = 'file-upload' onchange = "document.getElementsByClassName('file-upload')[0].style.border = 'inset'" ></input>
 			<button type = 'submit' class = 'submit' value = 'submit'>Submit</button>
 		</form>
 		</div>
