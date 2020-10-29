@@ -19,6 +19,22 @@
 	
     <div class = 'vertical-center-wrapper'>
     	<div class = 'vertical-center-container'>
+		<div>
+		<h2 class = 'text-center'>Change Profile Picture</h2>
+		<img src = {{picture}} id = 'picture'></img>
+		<form action = '/picture_upload', method = 'POST' enctype = 'multipart/form-data'>
+			<button class = 'file-upload'>
+				<label for = 'file-upload' class = 'file-upload-label'>
+					Upload
+				</label>
+			</button>
+			<input hidden type = 'file' name = 'file' id = 'file-upload'></input>
+			<button type = 'submit' class = 'submit' value = 'submit'>Submit</button>
+		</form>
+		</div>
+
+		<br>
+		<div>
     		<h2 class = 'text-center'>Change Username</h2>
     		<form action = '/my_account/change_username' method = 'POST'>
 			<input class = 'text-input' type = 'text' placeholder = 'Current Username' name = 'current'></input>
@@ -26,8 +42,10 @@
 			<input type = 'hidden' name = 'type' value = 'username'></input>
 			<button class = 'submit' type = 'submit' value = 'submit'>Submit</button>
     		</form>
+		</div>
 		<br>
 		
+		<div>
     		<h2 class = 'text-center'>Change Password</h2>
 		<form action = '/my_account/change_password' method = 'POST'>
 			<input class = 'text-input' type = 'password' placeholder = 'Current Password' name = 'current'></input>
@@ -35,15 +53,13 @@
 			<input type = 'hidden' name = 'type' value = 'password'></input>
 			<button class = 'submit' type = 'submit' value = 'submit'>Submit</button>
 		</form>
-		
+		</div>
 		{% if not session['admin'] %}
 		<br>
 		<br>
-
 		<form action = '/verify/my_account/delete/Delete Account%3f' method = 'POST'>
 			<button class = 'delete-account' type = 'submit' value = 'submit'>Delete Account</button>
 		</form>
-
 		{% endif %}
 	</div>
     </div>

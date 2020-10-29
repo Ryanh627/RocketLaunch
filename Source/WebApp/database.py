@@ -194,6 +194,47 @@ def db_delete(username):
             con.close()
         return False
 
+def db_change_picture(username, filename):
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+
+        #Update picture path in database
+        params = [filename, username]
+        db.execute(QUERY_USERS_UPDATE_PICTURE, params)
+
+        #Close database
+        con.close()
+
+        return True
+
+    except:
+        if con is not None:
+            con.close()
+        return False
+
+def db_get_picture(username):
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+        
+        #Get picture for specified user in database
+        params = [username]
+        picture = db.execute(QUERY_USERS_GET_PICTURE, params).fetchone()[0]
+
+        #Close database
+        con.close()
+
+        return picture
+
+    except:
+        if con is not None:
+            con.close()
+        return None
+
+
 def db_hash(password, salt):
     ret = hashlib.sha512((salt + password).encode())
     ret = ret.digest()

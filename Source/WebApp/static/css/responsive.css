@@ -10,9 +10,15 @@
 	#launchpads{
 		width:100%;
 	}
-	
-	.title{
-		margin-top:50px;
+
+	.vertical-center-wrapper{
+		height:300%;
+		width:auto;
+	}
+
+	.vertical-center-container{
+		display:block;
+		width:auto;
 	}
 
 }

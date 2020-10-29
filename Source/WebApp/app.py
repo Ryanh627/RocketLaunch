@@ -7,13 +7,18 @@
 #Imports and Initialization----------------------------------------------------
 
 from flask import Flask, redirect, url_for, request, render_template, session
-import random
+import random, os
 from pad import *
 from database import *
 from multiprocessing import Process
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = b'1\xcd/a\x88\x9fV5\x07|q\x91\xfa`\xc1y'
+
+UPLOAD_FOLDER = os.path.join('static', 'media/profile_pictures')
+ALLOWED_PICTURE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 db_init()
 pads = pads_setup()
@@ -68,8 +73,11 @@ def pad_selection(option):
 def my_account():
     if not logged_in():
         return redirect(url_for('login'))
+    
+    picture = db_get_picture(session['username'])
+    filename = os.path.join(app.config['UPLOAD_FOLDER'], picture)
 
-    return render_template('my_account.html')
+    return render_template('my_account.html', picture=filename)
 
 @app.route('/my_account/<option>', methods = ['POST', 'GET'])
 def changeUserInfo(option):
@@ -152,6 +160,31 @@ def delete():
 
     return redirect(url_for('login'))
 
+@app.route('/picture_upload', methods = ['POST', 'GET'])
+def picture_upload():
+    if request.method != 'POST':
+        if not logged_in():
+            return redirect(url_for('login'))
+        if is_admin():
+            return redirect(url_for('mission_control'))
+
+    picture = request.files['file']
+    
+    if picture.filename == '':
+        session['error'] = "No file selected! Please select a file!"
+        return redirect(url_for('my_account'))
+    
+    if verify_picture(picture.filename):
+        filename = secure_filename(picture.filename)
+        picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        db_change_picture(session['username'], filename)
+        session['success'] = "Profile picture changed!"
+        return redirect(url_for('my_account'))
+
+    else:
+        session['error'] = "Invalid image! Please select a different image!"
+        return redirect(url_for('my_account'))
+
 @app.route('/launch', methods = ['POST', 'GET'])
 def launch():
     if request.method == 'POST':
@@ -196,6 +229,13 @@ def get_pad(name):
         if pad.name == name:
             return pad
     return None
+
+def verify_picture(filename):
+    for extension in ALLOWED_PICTURE_EXTENSIONS:
+        if filename.lower().endswith(extension):
+            return True
+    
+    return False
 
 if __name__ == '__main__':
     app.run(debug = True)
