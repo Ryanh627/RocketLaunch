@@ -1,0 +1,41 @@
+<html>
+  <head>
+	  <meta name = 'viewport' content = 'width=device-width, initial-scale=1'>
+
+	  <link rel = 'stylesheet' href = "{{url_for('static', filename = 'css/standard.css')}}"></link>
+	  <link rel = 'stylesheet' href = "{{url_for('static', filename = 'css/forms.css')}}"></link>
+	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/responsive.css')}}"></link>
+  </head>
+   
+  <body>
+    <div id = 'header'>
+      <h1 class = 'text-center'>Raspberry Pi Virtual Launchpad</h1>
+    </div>
+    
+    <div class = 'vertical-center-wrapper'>
+	    <div class = 'vertical-center-container'>
+		<h1 class = 'text-center'>{{prompt}}</h1>
+		
+		<form action = "{{url_for(topage)}}" method = 'POST'>
+        		<input type = 'submit' class = 'submit' value = 'Yes'></input>
+    		</form>
+		
+		<form action = "{{url_for(frompage)}}" method = 'POST'>
+        		<input type = 'submit' class = 'submit background-red' value = 'No'></input>
+    		</form>
+	</div>
+
+    </div>
+
+    {% if 'success' in session %}
+	<p class = 'success-text text-center'>{{session['success']}}</p>
+	<p hidden>{{session.pop('success')}}</p>
+    {% endif %}
+
+    {% if 'error' in session %}
+	<p class = 'error-text text-center'>{{session['error']}}</p>
+	<p hidden>{{session.pop('error')}}</p>
+    {% endif %}
+
+  </body>
+</html>

@@ -22,8 +22,12 @@ pads = pads_setup()
 
 @app.route('/')
 def index():
-    if logged_in():
+    if logged_in() and is_admin():
         return redirect(url_for('mission_control'))
+    
+    elif logged_in() and not is_admin():
+        return redirect(url_for('my_account'))
+    
     else:
         return redirect(url_for('login'))
 
@@ -42,9 +46,6 @@ def mission_control():
 
 @app.route('/mission_control/<option>', methods = ['POST', 'GET'])
 def pad_selection(option):
-    if not logged_in():
-        return redirect(url_for('login'))
-
     if request.method != 'POST':
         return redirect(url_for('mission_control'))
 
@@ -63,7 +64,7 @@ def pad_selection(option):
 
     return redirect(url_for('mission_control'))
 
-@app.route('/my_account')
+@app.route('/my_account', methods = ['POST', 'GET'])
 def my_account():
     if not logged_in():
         return redirect(url_for('login'))
@@ -72,9 +73,6 @@ def my_account():
 
 @app.route('/my_account/<option>', methods = ['POST', 'GET'])
 def changeUserInfo(option):
-    if not logged_in():
-        return redirect(url_for('login'))
-
     if request.method != 'POST':
         return redirect(url_for('my_account'))
 
@@ -90,9 +88,6 @@ def changeUserInfo(option):
             session['success'] = "Password changed!"
         else:
             session['error'] = "Failed to change password!"
-
-    else:
-        return redirect(url_for('my_account'))
 
     return redirect(url_for('my_account'))
 
@@ -167,6 +162,16 @@ def launch():
         session.pop('selectedpads', None)
 
     return redirect(url_for('mission_control'))
+
+@app.route('/verify/<frompage>/<topage>/<prompt>', methods = ['POST', 'GET'])
+def verify(frompage, topage, prompt):
+    if request.method != 'POST':
+        if not logged_in():
+            return redirect(url_for('login'))
+        if is_admin():
+            return redirect(url_for('mission_control'))
+
+    return render_template('verify.html', frompage=frompage, topage=topage, prompt=prompt)
 
 #Methods-----------------------------------------------------------------------
 def logged_in():
