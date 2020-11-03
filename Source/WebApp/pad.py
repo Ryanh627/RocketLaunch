@@ -1,5 +1,7 @@
 import RPi.GPIO as GPIO
 import time
+from camera.py import take_video()
+from threading import Thread
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
@@ -24,6 +26,7 @@ class Pad:
         GPIO.cleanup(GPIOpin)
 
     def launch(self):
+        Thread(target=take_video, args=()).start()
         GPIO.setup(self.pinOut,GPIO.OUT) 
         GPIO.output(self.pinOut,GPIO.HIGH) 
         GPIO.output(self.pinOut,GPIO.LOW)
