@@ -1,0 +1,31 @@
+Key:
+	I = Individual task
+	M = Meeting task
+
+Tasks-----------------------------------
+
+I1) Mission control page redesign
+
+I2) Launch settings page
+ 
+I3) Video database insertion
+
+I4) Settings config file creation
+
+I5) User launch page
+
+I6) Circuit design & implementation
+
+I7) SSL Certificate research & implementation
+
+I8) Privacy policy creation
+
+I9) (Optional) Help page
+
+Assignments-----------------------------
+
+Benjamin: I1, I2, I5
+
+Ryan: I3, I4
+
+Peter: I6, I7, I8
