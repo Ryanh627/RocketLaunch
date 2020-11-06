@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 import time
-from camera.py import take_video()
+from camera import take_video
 from threading import Thread
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)

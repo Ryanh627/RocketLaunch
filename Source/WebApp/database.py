@@ -88,8 +88,10 @@ def db_signup(username, password):
         admin = False
         if username == "admin":
             admin = True
-        
-        params = [admin, username, localHash, localSalt]
+
+        authorized = False
+
+        params = [username, admin, localHash, localSalt, authorized]
         db.execute(QUERY_USERS_INSERT, params)
 
         #Close database
@@ -97,7 +99,8 @@ def db_signup(username, password):
     
         return True, admin
 
-    except:
+    except Exception as e:
+        print(e)
         if con is not None:
             con.close()
         return False, False
@@ -233,6 +236,46 @@ def db_get_picture(username):
         if con is not None:
             con.close()
         return None
+
+def db_get_authorized(username):
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+        
+        #Get authorization for specified user in database
+        params = [username]
+        authorized = db.execute(QUERY_USERS_GET_AUTHORIZED, params).fetchone()[0]
+
+        #Close database
+        con.close()
+
+        return authorized
+
+    except:
+        if con is not None:
+            con.close()
+        return False
+
+def db_update_authorized(username, val):
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+        
+        #Update authorization of specified user
+        params = [val, username]
+        db.execute(QUERY_USERS_UPDATE_AUTHORIZED, params)
+
+        #Close database
+        con.close()
+
+        return True
+
+    except:
+        if con is not None:
+            con.close()
+        return False
 
 
 def db_hash(password, salt):

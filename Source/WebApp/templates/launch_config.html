@@ -1,0 +1,81 @@
+<html>
+  <head>
+          <meta name = 'viewport' content = 'width=device-width, initial-scale=1'>
+
+	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/standard.css') }}"></link>
+	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/forms.css') }}"></link>
+          <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/responsive.css')}}"></link>
+
+  </head>
+   
+  <body>
+    <div id = 'header'>
+      <h1 class = 'text-center'>Raspberry Pi Virtual Launchpad</h1>
+    </div>
+
+    <h1 class = 'title text-center'>Launch Configuration</h1>
+    <div class = 'vertical-center-wrapper'>
+	    <div class = 'vertical-center-container'>
+        <form class = 'users-section'>
+          <h2 class = 'text-center'>Users</h2>
+	  
+	  {% for pad in pads %}
+          <div class = 'user-select'>
+            <p>{{pad.name}}</p>
+            <hr>
+            <select name = 'users'>
+	      <option>None</option>
+	      
+	      {% for user in users %}
+	      <option>{{user}}</option>
+	      {% endfor %}
+            
+	    </select>
+          </div>
+	  {% endfor %}
+
+          <button class = 'submit users-section-btn' type = 'submit'>Authorize</button>
+        </form>
+        <form class = 'settings-section'>
+          <h2 class = 'text-center'>Settings</h2>
+          <div class = 'setting-config'>
+            <p>Record Launch</p>
+            <hr>
+	    
+	    {% if record_launch %}
+	    <input type = 'checkbox' checked></input>
+	    {% else %}
+	    <input type = 'checkbox'></input>
+	    {% endif %}
+
+          </div>
+          <div class = 'setting-config'>
+            <p>Recording Duration (s)</p>
+            <hr>
+	    <input type = 'number' class = 'text-input small-text-input' value = {{recording_duration}}></input>
+          </div>
+          <button class = 'submit settings-section-btn' type = 'submit'>Save</button>
+        </form>
+      </div>
+    </div>
+
+{% if 'success' in session %}
+	<p class = 'green-text text-center'>{{session['success']}}</p>
+	<p hidden>{{session.pop('success')}}</p>
+{% endif %}
+
+{% if 'error' in session %}
+	<p class = 'red-text text-center'>{{session['error']}}</p>
+	<p hidden>{{session.pop('error')}}</p>
+{% endif %}
+
+    <div id = 'footer-padding'></div>
+    <div id = 'footer'>
+      <a href = '/sign_up'><h2>Sign Up</h2></a>
+      <a href = '/login'><h2>Login</h2></a>
+      <a href = '/my_account'><h2>My Account</h2></a>
+      <a href = '/mission_control'><h2>Mission Control</h2></a>
+      <a href = '/logout'><h2 id = 'footer_logout'>Logout</h2></a>
+    </div>
+  </body>
+</html>

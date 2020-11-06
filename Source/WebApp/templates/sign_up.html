@@ -25,12 +25,12 @@
 </div>
     
     {% if 'success' in session %}
-	<p class = 'success-text text-center'>{{session['success']}}</p>
+	<p class = 'green-text text-center'>{{session['success']}}</p>
 	<p hidden>{{session.pop('success')}}</p>
     {% endif %}
 
     {% if 'error' in session %}
-	<p class = 'error-text text-center'>{{session['error']}}</p>
+	<p class = 'green-text text-center'>{{session['error']}}</p>
 	<p hidden>{{session.pop('error')}}</p>
     {% endif %}
 

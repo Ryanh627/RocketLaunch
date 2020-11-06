@@ -30,7 +30,7 @@
 			<h2>{{pad.name}}</h2>
 
 			{% if pad.connected %}
-				<h2 class = 'ready-text'>Ready</h2>
+				<h2 class = 'green-text'>Ready</h2>
 				{% if pad.name in session['selectedpads'] %}
 				<form action = '/mission_control/deselect' method = 'POST'>
 					<input type = 'hidden' name = 'deselect' value = '{{pad.name}}'></input>
@@ -43,7 +43,7 @@
 				</form>
 				{% endif %}
 			{% else %}
-				<h2 class = 'not-ready-text'>Not ready</h2>
+				<h2 class = 'red-text'>Not ready</h2>
 				{% if pad.name in session['selectedpads'] %}
 					<button disabled>Deselect</button>
 				{% else %}
@@ -55,9 +55,9 @@
 		
 		<form action = '/launch' method = 'POST'>
 			{% if session['selectedpads']|length > 0 %}
-			<button class = 'launch-btn' type = 'submit' value = 'submit'>Launch</button>
+			<button class = 'wide-btn' type = 'submit' value = 'submit'>Launch</button>
 			{% else %}
-			<button disabled class = 'launch-btn' type = 'submit' value = 'submit'>Launch</button>
+			<button disabled class = 'wide-btn' type = 'submit' value = 'submit'>Launch</button>
 			{% endif %}
 		</form>
 
