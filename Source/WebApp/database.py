@@ -10,6 +10,8 @@ def db_init():
 
     #Create tables if they do not exist
     db.execute(QUERY_CREATE_TABLE_USERS)
+    db.execute(QUERY_CREATE_TABLE_SETTINGS)
+    db.execute(QUERY_CREATE_TABLE_AUTHORIZEDUSERS)
 
     #Close connection
     db.close()
@@ -266,6 +268,47 @@ def db_update_authorized(username, val):
         #Update authorization of specified user
         params = [val, username]
         db.execute(QUERY_USERS_UPDATE_AUTHORIZED, params)
+
+        #Close database
+        con.close()
+
+        return True
+
+    except:
+        if con is not None:
+            con.close()
+        return False
+
+
+def db_get_setting(setting):
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+        
+        #Get value for specified setting in database
+        params = [setting]
+        setting_val = db.execute(QUERY_SETTINGS_GET, params).fetchone()[0]
+
+        #Close database
+        con.close()
+
+        return setting_val
+
+    except:
+        if con is not None:
+            con.close()
+        return None
+
+def db_update_setting(setting, val):
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+        
+        #Update authorization of specified user
+        params = [setting, val]
+        db.execute(QUERY_SETTINGS_UPDATE, params)
 
         #Close database
         con.close()
