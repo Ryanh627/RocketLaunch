@@ -20,8 +20,8 @@ UPLOAD_FOLDER = os.path.join('static', 'media/profile_pictures')
 ALLOWED_PICTURE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-db_init()
 pads = pads_setup()
+db_init(len(pads))
 
 #App routes--------------------------------------------------------------------
 
@@ -145,6 +145,81 @@ def sign_up():
 
     return render_template('sign_up.html')
 
+@app.route('/authorize', methods = ['POST'])
+def authorize():
+    if request.method != 'POST':
+        if not logged_in():
+            return redirect(url_for('login'))
+        if is_admin():
+            return redirect(url_for('mission_control'))
+        
+        return redirect(url_for('my_account'))
+
+    error = False
+    authorized_users_duplicates = []
+    authorized_users = []
+    data = request.form
+
+    for key in data:
+        user = data[key]
+        authorized_users_duplicates.append(user)
+    
+    for i in authorized_users_duplicates:
+        if i not in authorized_users:
+            authorized_users.append(i)
+        else:
+            authorized_users.append("None")
+
+    if db_clear_authorized_users() == False:
+        error = True
+
+    for user in authorized_users:
+        if db_insert_authorized_user(user) == False:
+            error = True
+    
+    if error:
+        session['error'] = "Failed to authorize users!"
+
+    else:
+        session['success'] = "Successfully authorized users!"
+
+    return redirect(url_for('launch_config'))
+
+@app.route('/settings', methods = ['GET', 'POST'])
+def settings():
+    if request.method != 'POST':
+        if not logged_in():
+            return redirect(url_for('login'))
+        if is_admin():
+            return redirect(url_for('mission_control'))
+        
+        return redirect(url_for('my_account'))
+
+    error = False
+    data = request.form
+    try:
+        request.form['record_launch']
+        record_launch = True
+    
+    except:
+        record_launch = False
+
+    recording_duration = request.form['recording_duration']
+
+    if db_update_setting('RECORDLAUNCH', record_launch) == False:
+        error = True
+
+    if db_update_setting('RECORDINGDURATION', recording_duration) == False:
+        error = True
+
+    if error:
+        session['error'] = "Failed to save settings!"
+
+    else:
+        session['success'] = "Settings saved!"
+
+    return redirect(url_for('launch_config'))
+
 @app.route('/logout')
 def logout():
     session.clear()
@@ -205,6 +280,20 @@ def verify(frompage, topage, prompt):
             return redirect(url_for('mission_control'))
 
     return render_template('verify.html', frompage=frompage, topage=topage, prompt=prompt)
+
+@app.route('/launch_config')
+def launch_config():
+    if not logged_in():
+        return redirect(url_for('login'))
+    if not is_admin():
+        return redirect(url_for('my_account'))
+
+    users = db_get_usernames()
+    authorized_users = db_get_authorized_users()
+    record_launch = db_get_setting('RECORDLAUNCH')
+    recording_duration = db_get_setting('RECORDINGDURATION')
+
+    return render_template('launch_config.html', pads = pads, users = users, authorized_users = authorized_users, record_launch = record_launch, recording_duration = recording_duration)
 
 #Methods-----------------------------------------------------------------------
 def logged_in():

@@ -4,6 +4,7 @@
 
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/standard.css') }}"></link>
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/forms.css') }}"></link>
+	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/launch_config.css') }}"></link>
           <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/responsive.css')}}"></link>
 
   </head>
@@ -16,14 +17,13 @@
     <h1 class = 'title text-center'>Launch Configuration</h1>
     <div class = 'vertical-center-wrapper'>
 	    <div class = 'vertical-center-container'>
-        <form class = 'users-section'>
+        <form class = 'users-section' action = '/authorize' method = 'POST'>
           <h2 class = 'text-center'>Users</h2>
 	  
-	  {% for pad in pads %}
+	  {% for i in range(pads|length) %}
           <div class = 'user-select'>
-            <p>{{pad.name}}</p>
-            <hr>
-            <select name = 'users'>
+            <p>{{pads[i].name}}</p>
+	    <select value = {{authorized_users[i]}}>
 	      <option>None</option>
 	      
 	      {% for user in users %}
@@ -36,23 +36,22 @@
 
           <button class = 'submit users-section-btn' type = 'submit'>Authorize</button>
         </form>
-        <form class = 'settings-section'>
+        <form class = 'settings-section' action = 'settings' method = 'POST'>
           <h2 class = 'text-center'>Settings</h2>
           <div class = 'setting-config'>
             <p>Record Launch</p>
-            <hr>
 	    
 	    {% if record_launch %}
-	    <input type = 'checkbox' checked></input>
+	    <input name = 'record_launch' type = 'checkbox' checked></input>
 	    {% else %}
-	    <input type = 'checkbox'></input>
+	    <input name = 'record_launch' type = 'checkbox'></input>
 	    {% endif %}
 
           </div>
           <div class = 'setting-config'>
             <p>Recording Duration (s)</p>
-            <hr>
-	    <input type = 'number' class = 'text-input small-text-input' value = {{recording_duration}}></input>
+
+	    <input name = 'recording_duration' type = 'number' class = 'text-input small-text-input' value = {{recording_duration}}></input>
           </div>
           <button class = 'submit settings-section-btn' type = 'submit'>Save</button>
         </form>
@@ -71,10 +70,8 @@
 
     <div id = 'footer-padding'></div>
     <div id = 'footer'>
-      <a href = '/sign_up'><h2>Sign Up</h2></a>
-      <a href = '/login'><h2>Login</h2></a>
-      <a href = '/my_account'><h2>My Account</h2></a>
       <a href = '/mission_control'><h2>Mission Control</h2></a>
+      <a href = '/my_account'><h2>My Account</h2></a>
       <a href = '/logout'><h2 id = 'footer_logout'>Logout</h2></a>
     </div>
   </body>

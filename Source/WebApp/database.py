@@ -4,7 +4,7 @@ from queries import *
 DIR = "/home/pi/RocketLaunch/Source/WebApp/"
 DB_NAME = "rocketlaunch.db"
 
-def db_init():
+def db_init(num_pads):
     #Create database if it does not exist
     db = db_connect()
 
@@ -18,6 +18,12 @@ def db_init():
 
     #Create admin user if it does not exist
     db_signup("admin", "admin")
+
+    #Create settings if they do not exist
+    db_settings_init()
+
+    #Insert authorized users list to match size of pad list
+    db_authorized_users_init(num_pads)
 
 def db_connect():
     try:
@@ -91,9 +97,7 @@ def db_signup(username, password):
         if username == "admin":
             admin = True
 
-        authorized = False
-
-        params = [username, admin, localHash, localSalt, authorized]
+        params = [username, admin, localHash, localSalt]
         db.execute(QUERY_USERS_INSERT, params)
 
         #Close database
@@ -239,47 +243,6 @@ def db_get_picture(username):
             con.close()
         return None
 
-def db_get_authorized(username):
-    try:
-        #Connect to database
-        con = db_connect()
-        db = con.cursor()
-        
-        #Get authorization for specified user in database
-        params = [username]
-        authorized = db.execute(QUERY_USERS_GET_AUTHORIZED, params).fetchone()[0]
-
-        #Close database
-        con.close()
-
-        return authorized
-
-    except:
-        if con is not None:
-            con.close()
-        return False
-
-def db_update_authorized(username, val):
-    try:
-        #Connect to database
-        con = db_connect()
-        db = con.cursor()
-        
-        #Update authorization of specified user
-        params = [val, username]
-        db.execute(QUERY_USERS_UPDATE_AUTHORIZED, params)
-
-        #Close database
-        con.close()
-
-        return True
-
-    except:
-        if con is not None:
-            con.close()
-        return False
-
-
 def db_get_setting(setting):
     try:
         #Connect to database
@@ -287,8 +250,11 @@ def db_get_setting(setting):
         db = con.cursor()
         
         #Get value for specified setting in database
-        params = [setting]
-        setting_val = db.execute(QUERY_SETTINGS_GET, params).fetchone()[0]
+        if setting == "RECORDLAUNCH":
+            setting_val = db.execute(QUERY_SETTINGS_GET_RECORDLAUNCH).fetchone()[0]
+        
+        elif setting == "RECORDINGDURATION":
+            setting_val = db.execute(QUERY_SETTINGS_GET_RECORDINGDURATION).fetchone()[0]
 
         #Close database
         con.close()
@@ -306,9 +272,65 @@ def db_update_setting(setting, val):
         con = db_connect()
         db = con.cursor()
         
-        #Update authorization of specified user
-        params = [setting, val]
-        db.execute(QUERY_SETTINGS_UPDATE, params)
+        #Update setting value for specified setting
+        params = [val]
+
+        if setting == "RECORDLAUNCH":
+            db.execute(QUERY_SETTINGS_UPDATE_RECORDLAUNCH, params)
+        elif setting == "RECORDINGDURATION":
+            db.execute(QUERY_SETTINGS_UPDATE_RECORDINGDURATION, params)
+
+        #Close database
+        con.close()
+
+        return True
+
+    except Exception as e:
+        print(e)
+        if con is not None:
+            con.close()
+        return False
+
+def db_get_usernames():
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+        
+        #Get all users in database
+        users = db.execute(QUERY_USERS_GET_USERNAMES).fetchall()
+
+        userlist = []
+        for user in users:
+            userlist.append(user[0])
+
+        #Close database
+        con.close()
+
+        return userlist
+
+    except:
+        if con is not None:
+            con.close()
+        return None
+
+def db_settings_init():
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+        
+        #Get all settings columns from the database
+        settings = db.execute(QUERY_SETTINGS_GET_ALL).fetchall()
+
+        exists = False
+        if len(settings) != 0:
+            exists = True
+
+        if exists:
+            return False
+
+        db.execute(QUERY_SETTINGS_INSERT)
 
         #Close database
         con.close()
@@ -320,6 +342,95 @@ def db_update_setting(setting, val):
             con.close()
         return False
 
+def db_get_authorized_users():
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+        
+        #Get all authorized users from the database
+        authorized_users = db.execute(QUERY_AUTHORIZEDUSERS_GET_USERNAMES).fetchall()
+        
+        authorized_usernames = []
+
+        for user in authorized_users:
+            authorized_usernames.append(user[0])
+
+        #Close database
+        con.close()
+
+        return authorized_users
+
+    except:
+        if con is not None:
+            con.close()
+        return None
+
+def db_insert_authorized_user(username):
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+        
+        #Insert authorized user into database
+        params = [username]
+        db.execute(QUERY_AUTHORIZEDUSERS_INSERT, params)
+
+        #Close database
+        con.close()
+
+        return True
+
+    except Exception as e:
+        print(e)
+        if con is not None:
+            con.close()
+        return False
+
+def db_clear_authorized_users():
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+        
+        #Clear all authorized users from the database
+        db.execute(QUERY_AUTHORIZEDUSERS_CLEAR)
+
+        #Close database
+        con.close()
+
+        return True
+
+    except Exception as e:
+        print(e)
+        if con is not None:
+            con.close()
+        return False
+
+def db_authorized_users_init(num):
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+        
+        #Get all authorized users from database
+        authorized_users = db.execute(QUERY_AUTHORIZEDUSERS_GET_USERNAMES).fetchall()
+
+        if len(authorized_users) == num:
+            return False
+
+        for i in range(num):
+            db.execute(QUERY_AUTHORIZED_USERS_INSERT)
+
+        #Close database
+        con.close()
+
+        return True
+
+    except:
+        if con is not None:
+            con.close()
+        return False
 
 def db_hash(password, salt):
     ret = hashlib.sha512((salt + password).encode())

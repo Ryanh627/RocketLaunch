@@ -1,0 +1,54 @@
+.user-select{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.setting-config{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.users-section{
+  width:33%;
+  margin-right:auto;
+  margin-left:auto;
+}
+
+.users-section-btn{
+  width:100%;
+}
+
+.settings-section-btn{
+  width:100%;
+}
+
+.settings-section{
+  width:33%;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+select{
+  margin:5px;
+  padding:10px;
+  border-radius:5px;
+  width:100px;
+}
+
+.small-text-input{
+  width:25%;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+input[type='checkbox']{
+  width:25%;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.setting-config p{
+  width:75%;
+}
