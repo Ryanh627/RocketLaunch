@@ -282,6 +282,48 @@ def launch():
 
     return redirect(url_for('mission_control'))
 
+@app.route('/user_launch/<index>', methods = ['GET', 'POST'])
+def user_launch(index):
+    if request.method != 'POST':
+        if not logged_in():
+            return redirect(url_for('login'))
+        if is_admin():
+            return redirect(url_for('mission_control'))
+        else:
+            return redirect(url_for('my_account'))
+    
+    index = int(index)
+    pad = pads[index]
+    pad.launch()
+
+    return redirect(url_for('user_launch_page'))
+    
+@app.route('/user_launch_page', methods = ['POST', 'GET'])
+def user_launch_page():
+    if not logged_in():
+        return redirect(url_for('login'))
+    if is_admin():
+        return redirect(url_for('mission_control'))
+    
+    rocket_connected = False
+    authorized = False
+
+    authorized_users = db_get_authorized_users()
+
+    index = -1
+    for i in range(len(authorized_users)):
+        if session['username'] == authorized_users[i]:
+            index = i
+    
+    if index != -1:
+        if pads[index].connected:
+            rocket_connected = True
+    
+    if session['username'] in authorized_users:
+        authorized = True
+
+    return render_template('launch.html', rocket_connected = rocket_connected, authorized = authorized, index = index)
+
 @app.route('/verify/<frompage>/<topage>/<prompt>', methods = ['POST', 'GET'])
 def verify(frompage, topage, prompt):
     if request.method != 'POST':
@@ -289,6 +331,8 @@ def verify(frompage, topage, prompt):
             return redirect(url_for('login'))
         if is_admin():
             return redirect(url_for('mission_control'))
+        else:
+            return redirect(url_for('my_account'))
 
     return render_template('verify.html', frompage=frompage, topage=topage, prompt=prompt)
 

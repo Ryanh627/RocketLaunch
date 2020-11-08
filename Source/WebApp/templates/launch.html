@@ -1,0 +1,59 @@
+<html>
+  <head>
+	  <meta http-equiv = "refresh" content = "5"> 
+          <meta name = 'viewport' content = 'width=device-width, initial-scale=1'>
+
+	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/standard.css') }}"></link>
+	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/forms.css') }}"></link>
+          <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/responsive.css')}}"></link>
+
+  </head>
+   
+  <body>
+    <div id = 'header'>
+      <h1 class = 'text-center'>Raspberry Pi Virtual Launchpad</h1>
+    </div>
+
+  <div class = 'vertical-center-wrapper'>
+	<form class = 'vertical-center-container' action = "/user_launch/{{index}}"  method = 'POST'>
+		<div>
+		<h1 class = 'text-center'>Launch</h1>
+		{% if authorized and rocket_connected %}
+			<button class = 'submit' type = 'submit' name = 'submit'>Launch</button>
+		{% else %}
+			<button class = 'submit' disabled type = 'submit' name = 'submit'>Launch</button>
+		{% endif %}
+
+		</div>
+    	</form>
+  </div>
+
+	{% if rocket_connected %}
+		<p class = 'green-text text-center'>Rocket Detected</p>
+	{% else %}
+		<p class = 'red-text text-center'>No Rocket Detected</p>
+	{% endif %}
+
+	{% if authorized %}
+		<p class = 'green-text text-center'>Authorized</p>
+	{% else %}
+		<p class = 'red-text text-center'>Not Authorized</p>
+	{% endif %}
+
+{% if 'success' in session %}
+	<p class = 'green-text text-center'>{{session['success']}}</p>
+	<p hidden>{{session.pop('success')}}</p>
+{% endif %}
+
+{% if 'error' in session %}
+	<p class = 'red-text text-center'>{{session['error']}}</p>
+	<p hidden>{{session.pop('error')}}</p>
+{% endif %}
+
+    <div id = 'footer-padding'></div>
+    <div id = 'footer'>
+      <a href = '/my_account'><h2>My Account</h2></a>
+      <a href = '/logout'><h2 id = 'footer_logout'>Logout</h2></a>
+    </div>
+  </body>
+</html>

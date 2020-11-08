@@ -111,3 +111,7 @@ a{
 .background-red{
   background-color:rgb(242, 86, 83) !important;
 }
+
+button[disabled]{
+  background-color:grey;
+}
