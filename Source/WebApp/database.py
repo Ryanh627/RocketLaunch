@@ -1,4 +1,4 @@
-import sqlite3, secrets, hashlib
+import sqlite3, secrets, hashlib, time
 from queries import *
 
 DIR = "/home/pi/RocketLaunch/Source/WebApp/"
@@ -22,8 +22,8 @@ def db_init(num_pads):
     #Create settings if they do not exist
     db_settings_init()
 
-    #Insert authorized users list to match size of pad list
-    db_authorized_users_init(num_pads)
+    #Erase any lingering authorized users
+    db_erase_authorized_users()
 
 def db_connect():
     try:
@@ -80,6 +80,10 @@ def db_signup(username, password):
     try:
         #Error if username or password is empty
         if username == "" or password == "":
+            return False, False
+
+        #Error if username is "None"
+        if username == "None":
             return False, False
 
         #Connect to database
@@ -352,14 +356,14 @@ def db_get_authorized_users():
         authorized_users = db.execute(QUERY_AUTHORIZEDUSERS_GET_USERNAMES).fetchall()
         
         authorized_usernames = []
-
+        
         for user in authorized_users:
             authorized_usernames.append(user[0])
 
         #Close database
         con.close()
 
-        return authorized_users
+        return authorized_usernames
 
     except:
         if con is not None:
@@ -415,6 +419,9 @@ def db_authorized_users_init(num):
         
         #Get all authorized users from database
         authorized_users = db.execute(QUERY_AUTHORIZEDUSERS_GET_USERNAMES).fetchall()
+        
+        print(num)
+        print(len(authorized_users))
 
         if len(authorized_users) == num:
             return False
@@ -431,6 +438,31 @@ def db_authorized_users_init(num):
         if con is not None:
             con.close()
         return False
+
+def db_erase_authorized_users():
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+        
+        #Delete all authorized users from database
+        db.execute(QUERY_AUTHORIZEDUSERS_ERASE)
+
+        #Close database
+        con.close()
+
+        return True
+
+    except:
+        if con is not None:
+            con.close()
+        return False
+
+def db_authorization_timeout():
+    wait_time = 60
+    time.sleep(wait_time)
+    db_erase_authorized_users()
+    print("timeout")
 
 def db_hash(password, salt):
     ret = hashlib.sha512((salt + password).encode())

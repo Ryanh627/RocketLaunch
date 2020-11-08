@@ -22,6 +22,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 pads = pads_setup()
 db_init(len(pads))
+authorization_timeout = Process(target=db_authorization_timeout)
 
 #App routes--------------------------------------------------------------------
 
@@ -154,6 +155,14 @@ def authorize():
             return redirect(url_for('mission_control'))
         
         return redirect(url_for('my_account'))
+    
+    global authorization_timeout
+
+    if authorization_timeout.is_alive():
+        authorization_timeout.terminate()
+    
+    authorization_timeout = Process(target=db_authorization_timeout)   
+    authorization_timeout.start()
 
     error = False
     authorized_users_duplicates = []
@@ -170,8 +179,10 @@ def authorize():
         else:
             authorized_users.append("None")
 
-    if db_clear_authorized_users() == False:
+    if db_erase_authorized_users() == False:
         error = True
+
+    db_authorized_users_init(len(pads))
 
     for user in authorized_users:
         if db_insert_authorized_user(user) == False:
