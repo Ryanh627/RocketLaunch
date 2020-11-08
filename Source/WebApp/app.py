@@ -316,6 +316,7 @@ def user_launch_page():
             index = i
     
     if index != -1:
+        pads[index].check_connection()
         if pads[index].connected:
             rocket_connected = True
     

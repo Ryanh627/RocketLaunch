@@ -419,9 +419,6 @@ def db_authorized_users_init(num):
         
         #Get all authorized users from database
         authorized_users = db.execute(QUERY_AUTHORIZEDUSERS_GET_USERNAMES).fetchall()
-        
-        print(num)
-        print(len(authorized_users))
 
         if len(authorized_users) == num:
             return False
