@@ -1,7 +1,6 @@
 <html>
   <head>
-	  <meta name = 'viewport' content = 'width=device-width, initial-scale=1'>
-
+	  <meta name = 'viewport' content = 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1'>
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/standard.css') }}"></link>
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/forms.css') }}"></link>
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/my_account.css') }}"></link>
@@ -21,7 +20,7 @@
     	<div class = 'vertical-center-container'>
 		<div>
 		<h2 class = 'text-center'>Change Profile Picture</h2>
-		<img src = {{picture}} id = 'picture'></img>
+		<img src = '{{picture}}' id = 'picture'></img>
 		<button class = 'file-upload'>
 				<label for = 'file-upload' class = 'file-upload-label'>
 					Upload

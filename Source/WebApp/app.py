@@ -9,20 +9,22 @@
 from flask import Flask, redirect, url_for, request, render_template, session
 import random, os
 from pad import *
+from flask_socketio import *
 from database import *
 from multiprocessing import Process
 from werkzeug.utils import secure_filename
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path = '/static')
 app.secret_key = b'1\xcd/a\x88\x9fV5\x07|q\x91\xfa`\xc1y'
 
-UPLOAD_FOLDER = os.path.join('static', 'media/profile_pictures')
+UPLOAD_FOLDER = '/home/pi/RocketLaunch/Source/WebApp/static/media/profile_pictures'
 ALLOWED_PICTURE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 pads = pads_setup()
 db_init(len(pads))
 authorization_timeout = Process(target=db_authorization_timeout)
+socketio = SocketIO(app)
 
 #App routes--------------------------------------------------------------------
 
@@ -76,7 +78,7 @@ def my_account():
         return redirect(url_for('login'))
     
     picture = db_get_picture(session['username'])
-    filename = os.path.join(app.config['UPLOAD_FOLDER'], picture)
+    filename = url_for('static', filename = 'media/profile_pictures/' + picture)
 
     return render_template('my_account.html', picture=filename)
 
@@ -381,6 +383,10 @@ def verify_picture(filename):
             return True
     
     return False
+
+@socketio.on('disconnect')
+def disconnect_user():
+
 
 if __name__ == '__main__':
     app.run(debug = True)
