@@ -44,7 +44,18 @@ def mission_control():
 
     if not is_admin():
         return redirect(url_for('my_account'))
-
+    #Testcode
+    GPIO.setup(23,GPIO.OUT)
+    #GPIO.setup(18,GPIO.IN)
+    GPIO.setup(20,GPIO.OUT)
+    GPIO.setup(21,GPIO.OUT)
+    GPIO.output(23,GPIO.HIGH)
+        
+    GPIO.output(20, GPIO.HIGH)
+    GPIO.output(21, GPIO.HIGH)
+        
+    GPIO.output(20,GPIO.LOW)
+    #End test code
     for pad in pads:
         pad.check_connection()
 
