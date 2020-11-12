@@ -18,3 +18,5 @@ def take_video():
         camera.wait_recording(duration)
         camera.stop_recording()
         camera.close()
+        
+        
