@@ -18,8 +18,3 @@ def take_video():
         camera.wait_recording(duration)
         camera.stop_recording()
         camera.close()
-<<<<<<< HEAD:Source/WebApp/Camera.py
-        
-        
-=======
->>>>>>> 1c6a864620d5d8e416b2442591971d9c4c146512:Source/WebApp/camera.py
