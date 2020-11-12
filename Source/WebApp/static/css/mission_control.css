@@ -50,11 +50,7 @@
   color:rgb(242,86,83);
 }
 
-button[disabled]{
-  background-color:grey;
-}
-
-.launch-btn{
+.wide-btn{
   width:96%;
   margin-left:2%;
   padding:var(--padding-desk);

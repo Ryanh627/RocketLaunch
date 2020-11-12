@@ -1,0 +1,28 @@
+Key:
+	I = Individual task
+	M = Meeting task
+
+Tasks-----------------------------------
+
+ 
+I1) Video database insertion
+
+I2) Circuit implementation
+
+I3) Privacy policy creation
+
+I4) (Optional) Help page
+
+I5) Fix CSS keyboard viewport
+
+I6) Video Page
+
+I7) Launch function redesign
+
+Assignments-----------------------------
+
+Benjamin: I5, I6
+
+Ryan: I1, I7
+
+Peter: I2, I3

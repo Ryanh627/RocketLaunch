@@ -13,15 +13,16 @@ from database import *
 from multiprocessing import Process
 from werkzeug.utils import secure_filename
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path = '/static')
 app.secret_key = b'1\xcd/a\x88\x9fV5\x07|q\x91\xfa`\xc1y'
 
-UPLOAD_FOLDER = os.path.join('static', 'media/profile_pictures')
+UPLOAD_FOLDER = '/home/pi/RocketLaunch/Source/WebApp/static/media/profile_pictures'
 ALLOWED_PICTURE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-db_init()
 pads = pads_setup()
+db_init(len(pads))
+authorization_timeout = Process(target=db_authorization_timeout)
 
 #App routes--------------------------------------------------------------------
 
@@ -43,7 +44,18 @@ def mission_control():
 
     if not is_admin():
         return redirect(url_for('my_account'))
-
+    #Testcode
+    GPIO.setup(23,GPIO.OUT)
+    #GPIO.setup(18,GPIO.IN)
+    GPIO.setup(20,GPIO.OUT)
+    GPIO.setup(21,GPIO.OUT)
+    GPIO.output(23,GPIO.HIGH)
+        
+    GPIO.output(20, GPIO.HIGH)
+    GPIO.output(21, GPIO.HIGH)
+        
+    GPIO.output(20,GPIO.LOW)
+    #End test code
     for pad in pads:
         pad.check_connection()
 
@@ -75,7 +87,7 @@ def my_account():
         return redirect(url_for('login'))
     
     picture = db_get_picture(session['username'])
-    filename = os.path.join(app.config['UPLOAD_FOLDER'], picture)
+    filename = url_for('static', filename = 'media/profile_pictures/' + picture)
 
     return render_template('my_account.html', picture=filename)
 
@@ -145,6 +157,91 @@ def sign_up():
 
     return render_template('sign_up.html')
 
+@app.route('/authorize', methods = ['POST'])
+def authorize():
+    if request.method != 'POST':
+        if not logged_in():
+            return redirect(url_for('login'))
+        if is_admin():
+            return redirect(url_for('mission_control'))
+        
+        return redirect(url_for('my_account'))
+    
+    global authorization_timeout
+
+    if authorization_timeout.is_alive():
+        authorization_timeout.terminate()
+    
+    authorization_timeout = Process(target=db_authorization_timeout)   
+    authorization_timeout.start()
+
+    error = False
+    authorized_users_duplicates = []
+    authorized_users = []
+    data = request.form
+
+    for key in data:
+        user = data[key]
+        authorized_users_duplicates.append(user)
+    
+    for i in authorized_users_duplicates:
+        if i not in authorized_users:
+            authorized_users.append(i)
+        else:
+            authorized_users.append("None")
+
+    if db_erase_authorized_users() == False:
+        error = True
+
+    db_authorized_users_init(len(pads))
+
+    for user in authorized_users:
+        if db_insert_authorized_user(user) == False:
+            error = True
+    
+    if error:
+        session['error'] = "Failed to authorize users!"
+
+    else:
+        session['success'] = "Successfully authorized users!"
+
+    return redirect(url_for('launch_config'))
+
+@app.route('/settings', methods = ['GET', 'POST'])
+def settings():
+    if request.method != 'POST':
+        if not logged_in():
+            return redirect(url_for('login'))
+        if is_admin():
+            return redirect(url_for('mission_control'))
+        
+        return redirect(url_for('my_account'))
+
+    error = False
+    data = request.form
+    try:
+        request.form['record_launch']
+        record_launch = True
+    
+    except:
+        record_launch = False
+
+    recording_duration = request.form['recording_duration']
+
+    if db_update_setting('RECORDLAUNCH', record_launch) == False:
+        error = True
+
+    if db_update_setting('RECORDINGDURATION', recording_duration) == False:
+        error = True
+
+    if error:
+        session['error'] = "Failed to save settings!"
+
+    else:
+        session['success'] = "Settings saved!"
+
+    return redirect(url_for('launch_config'))
+
 @app.route('/logout')
 def logout():
     session.clear()
@@ -196,6 +293,49 @@ def launch():
 
     return redirect(url_for('mission_control'))
 
+@app.route('/user_launch/<index>', methods = ['GET', 'POST'])
+def user_launch(index):
+    if request.method != 'POST':
+        if not logged_in():
+            return redirect(url_for('login'))
+        if is_admin():
+            return redirect(url_for('mission_control'))
+        else:
+            return redirect(url_for('my_account'))
+    
+    index = int(index)
+    pad = pads[index]
+    pad.launch()
+
+    return redirect(url_for('user_launch_page'))
+    
+@app.route('/user_launch_page', methods = ['POST', 'GET'])
+def user_launch_page():
+    if not logged_in():
+        return redirect(url_for('login'))
+    if is_admin():
+        return redirect(url_for('mission_control'))
+    
+    rocket_connected = False
+    authorized = False
+
+    authorized_users = db_get_authorized_users()
+
+    index = -1
+    for i in range(len(authorized_users)):
+        if session['username'] == authorized_users[i]:
+            index = i
+    
+    if index != -1:
+        pads[index].check_connection()
+        if pads[index].connected:
+            rocket_connected = True
+    
+    if session['username'] in authorized_users:
+        authorized = True
+
+    return render_template('launch.html', rocket_connected = rocket_connected, authorized = authorized, index = index)
+
 @app.route('/verify/<frompage>/<topage>/<prompt>', methods = ['POST', 'GET'])
 def verify(frompage, topage, prompt):
     if request.method != 'POST':
@@ -203,8 +343,24 @@ def verify(frompage, topage, prompt):
             return redirect(url_for('login'))
         if is_admin():
             return redirect(url_for('mission_control'))
+        else:
+            return redirect(url_for('my_account'))
 
     return render_template('verify.html', frompage=frompage, topage=topage, prompt=prompt)
+
+@app.route('/launch_config')
+def launch_config():
+    if not logged_in():
+        return redirect(url_for('login'))
+    if not is_admin():
+        return redirect(url_for('my_account'))
+
+    users = db_get_usernames()
+    authorized_users = db_get_authorized_users()
+    record_launch = db_get_setting('RECORDLAUNCH')
+    recording_duration = db_get_setting('RECORDINGDURATION')
+
+    return render_template('launch_config.html', pads = pads, users = users, authorized_users = authorized_users, record_launch = record_launch, recording_duration = recording_duration)
 
 #Methods-----------------------------------------------------------------------
 def logged_in():
@@ -238,4 +394,4 @@ def verify_picture(filename):
     return False
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(debug=True)

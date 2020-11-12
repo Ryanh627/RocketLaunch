@@ -96,11 +96,11 @@ a{
   color:rgb(242, 86, 83);
 }
 
-.error-text{
+.red-text{
   color:rgb(242, 86, 83);
 }
 
-.success-text{
+.green-text{
   color:rgb(92, 243, 164);
 }
 
@@ -110,4 +110,8 @@ a{
 
 .background-red{
   background-color:rgb(242, 86, 83) !important;
+}
+
+button[disabled]{
+  background-color:grey;
 }

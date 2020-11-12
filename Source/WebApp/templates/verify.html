@@ -1,7 +1,6 @@
 <html>
   <head>
-	  <meta name = 'viewport' content = 'width=device-width, initial-scale=1'>
-
+	  <meta name = 'viewport' content = 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1'>
 	  <link rel = 'stylesheet' href = "{{url_for('static', filename = 'css/standard.css')}}"></link>
 	  <link rel = 'stylesheet' href = "{{url_for('static', filename = 'css/forms.css')}}"></link>
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/responsive.css')}}"></link>
@@ -30,12 +29,12 @@
     </div>
 
     {% if 'success' in session %}
-	<p class = 'success-text text-center'>{{session['success']}}</p>
+	<p class = 'green-text text-center'>{{session['success']}}</p>
 	<p hidden>{{session.pop('success')}}</p>
     {% endif %}
 
     {% if 'error' in session %}
-	<p class = 'error-text text-center'>{{session['error']}}</p>
+	<p class = 'red-text text-center'>{{session['error']}}</p>
 	<p hidden>{{session.pop('error')}}</p>
     {% endif %}
 

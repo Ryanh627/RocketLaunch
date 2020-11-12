@@ -1,7 +1,6 @@
 <html>
   <head>
-	  <meta name = 'viewport' content = 'width=device-width, initial-scale=1'>
-
+	  <meta name = 'viewport' content = 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1'>
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/standard.css') }}"></link>
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/forms.css') }}"></link>
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/my_account.css') }}"></link>
@@ -21,7 +20,7 @@
     	<div class = 'vertical-center-container'>
 		<div>
 		<h2 class = 'text-center'>Change Profile Picture</h2>
-		<img src = {{picture}} id = 'picture'></img>
+		<img src = '{{picture}}' id = 'picture'></img>
 		<button class = 'file-upload'>
 				<label for = 'file-upload' class = 'file-upload-label'>
 					Upload
@@ -66,12 +65,12 @@
     </div>
 
 {% if 'success' in session %}
-	<p class = 'success-text text-center'>{{session['success']}}</p>
+	<p class = 'green-text text-center'>{{session['success']}}</p>
 	<p hidden>{{session.pop('success')}}</p>
 {% endif %}
 
 {% if 'error' in session %}
-	<p class = 'error-text text-center'>{{session['error']}}</p>
+	<p class = 'red-text text-center'>{{session['error']}}</p>
 	<p hidden>{{session.pop('error')}}</p>
 {% endif %}
 
@@ -79,8 +78,10 @@
     <div id = 'footer'>
 	{% if session['admin'] %}
 	<a href = '/mission_control'><h2>Mission Control</h2></a>
+	<a href = '/launch_config'><h2>Launch Configuration</h2></a>
+	{% else %}
+	<a href = '/user_launch_page'><h2>Launch</h2></a>
 	{% endif %}
-
       	<a href = '/logout'><h2 id = 'footer_logout'>Logout</h2></a>
     </div>
   </body>

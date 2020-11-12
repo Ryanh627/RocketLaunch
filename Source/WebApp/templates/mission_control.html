@@ -1,8 +1,7 @@
 <html>
   <head>
 	  <meta http-equiv = "refresh" content = "5">
-	  <meta name = 'viewport' content = 'width=device-width, initial-scale=1'>
-
+	  <meta name = 'viewport' content = 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1'>
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/standard.css') }}"></link>
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/mission_control.css')}}"></link>
 	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/responsive.css')}}"></link>
@@ -30,7 +29,7 @@
 			<h2>{{pad.name}}</h2>
 
 			{% if pad.connected %}
-				<h2 class = 'ready-text'>Ready</h2>
+				<h2 class = 'green-text'>Ready</h2>
 				{% if pad.name in session['selectedpads'] %}
 				<form action = '/mission_control/deselect' method = 'POST'>
 					<input type = 'hidden' name = 'deselect' value = '{{pad.name}}'></input>
@@ -43,7 +42,7 @@
 				</form>
 				{% endif %}
 			{% else %}
-				<h2 class = 'not-ready-text'>Not ready</h2>
+				<h2 class = 'red-text'>Not ready</h2>
 				{% if pad.name in session['selectedpads'] %}
 					<button disabled>Deselect</button>
 				{% else %}
@@ -55,9 +54,9 @@
 		
 		<form action = '/launch' method = 'POST'>
 			{% if session['selectedpads']|length > 0 %}
-			<button class = 'launch-btn' type = 'submit' value = 'submit'>Launch</button>
+			<button class = 'wide-btn' type = 'submit' value = 'submit'>Launch</button>
 			{% else %}
-			<button disabled class = 'launch-btn' type = 'submit' value = 'submit'>Launch</button>
+			<button disabled class = 'wide-btn' type = 'submit' value = 'submit'>Launch</button>
 			{% endif %}
 		</form>
 
@@ -76,6 +75,7 @@
 
     <div id = 'footer-padding'></div>
     <div id = 'footer'>
+      <a href = '/launch_config'><h2>Launch Configuration</h2></a>
       <a href = '/my_account'><h2>My Account</h2></a>
       <a href = '/logout'><h2 id = 'footer_logout'>Logout</h2></a>
     </div>
