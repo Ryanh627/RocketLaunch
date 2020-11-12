@@ -9,7 +9,6 @@
 from flask import Flask, redirect, url_for, request, render_template, session
 import random, os
 from pad import *
-from flask_socketio import *
 from database import *
 from multiprocessing import Process
 from werkzeug.utils import secure_filename
@@ -24,7 +23,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 pads = pads_setup()
 db_init(len(pads))
 authorization_timeout = Process(target=db_authorization_timeout)
-socketio = SocketIO(app)
 
 #App routes--------------------------------------------------------------------
 
@@ -384,9 +382,5 @@ def verify_picture(filename):
     
     return False
 
-@socketio.on('disconnect')
-def disconnect_user():
-
-
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(debug=True)

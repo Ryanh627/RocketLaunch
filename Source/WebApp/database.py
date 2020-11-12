@@ -459,7 +459,6 @@ def db_authorization_timeout():
     wait_time = 60
     time.sleep(wait_time)
     db_erase_authorized_users()
-    print("timeout")
 
 def db_hash(password, salt):
     ret = hashlib.sha512((salt + password).encode())
