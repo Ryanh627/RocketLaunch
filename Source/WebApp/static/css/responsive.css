@@ -29,4 +29,18 @@
 		width:75%;
 	}
 
+	.videos{
+		width:100%;
+		min-height:300px;
+	}
+
+	.search-bar{
+		width:90%;
+	}
+
+	.video-user img{
+		width:25px;
+		height:25px;
+	}
+
 }

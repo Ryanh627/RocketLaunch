@@ -351,6 +351,13 @@ def launch_config():
 
     return render_template('launch_config.html', pads = pads, users = users, authorized_users = authorized_users, record_launch = record_launch, recording_duration = recording_duration)
 
+@app.route('/videos')
+def videos():
+    if not logged_in():
+        return redirect(url_for('login'))
+    
+    return render_template('videos.html')
+
 #Methods-----------------------------------------------------------------------
 def logged_in():
     try:

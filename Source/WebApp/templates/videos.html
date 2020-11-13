@@ -1,0 +1,58 @@
+<html>
+  <head>
+          <meta name = 'viewport' content = 'width=device-width, initial-scale=1'>
+
+	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/standard.css') }}"></link>
+          <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/forms.css') }}"></link>
+	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/videos.css') }}"></link>
+          <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/responsive.css')}}"></link>
+  </head>
+   
+  <body>
+    <div id = 'header'>
+      <h1 class = 'text-center'>Raspberry Pi Virtual Launchpad</h1>
+    </div>
+    <h1 class = 'title text-center'>Videos</h1>
+    
+    <form class = 'search-bar'>
+            <input class = 'text-input' type = 'text' placeholder = 'Search by user...'> </input>
+    <button class = 'submit' type = 'submit' name = 'submit'>Search</button>
+          </form>
+    <div class = 'videos'>
+      <div class = 'video-box'>
+        <div class = 'video-header'>
+          <div class = 'video-users'>
+            <div class = 'video-user'>
+              <img src = 'https://i2.wp.com/ceklog.kindel.com/wp-content/uploads/2013/02/firefox_2018-07-10_07-50-11.png' title = 'User'></img>
+            <p>User</p>
+            </div>
+          <div class = 'video-user'>
+              <img src = 'https://i2.wp.com/ceklog.kindel.com/wp-content/uploads/2013/02/firefox_2018-07-10_07-50-11.png' title = 'User'></img>
+            <p>User</p>
+            </div>
+        <div class = 'video-user'>
+              <img src = 'https://i2.wp.com/ceklog.kindel.com/wp-content/uploads/2013/02/firefox_2018-07-10_07-50-11.png' title = 'User'></img>
+            <p>User</p>
+            </div>
+          </div>
+          <p class = 'text-center video-timestamp'>2020-11-12 20:26:27</p>
+        </div>
+        <video src = 'http://techslides.com/demos/sample-videos/small.mp4' controls></video>
+      </div>
+
+    </div>
+
+
+    <div id = 'footer-padding'></div>
+    <div id = 'footer'>
+      {% if session['admin'] %}
+        <a href = '/mission_control'><h2>Mission Control</h2></a>
+	<a href = '/launch_config'><h2>Launch Configuration</h2></a>
+	{% else %}
+	<a href = '/user_launch_page'><h2>Launch</h2></a>
+	{% endif %}
+	<a href = '/my_account'><h2>My Account</h2></a>
+      	<a href = '/logout'><h2 id = 'footer_logout'>Logout</h2></a>
+    </div>
+  </body>
+</html>
