@@ -44,18 +44,7 @@ def mission_control():
 
     if not is_admin():
         return redirect(url_for('my_account'))
-    #Testcode
-    GPIO.setup(23,GPIO.OUT)
-    #GPIO.setup(18,GPIO.IN)
-    GPIO.setup(20,GPIO.OUT)
-    GPIO.setup(21,GPIO.OUT)
-    GPIO.output(23,GPIO.HIGH)
-        
-    GPIO.output(20, GPIO.HIGH)
-    GPIO.output(21, GPIO.HIGH)
-        
-    GPIO.output(20,GPIO.LOW)
-    #End test code
+
     for pad in pads:
         pad.check_connection()
 
@@ -367,7 +356,14 @@ def videos():
     if not logged_in():
         return redirect(url_for('login'))
     
-    return render_template('videos.html')
+    videos = db_get_videos()
+
+    for i in range(len(videos)):
+        videos[i].name = url_for('static', filename = 'media/videos/' + videos[i].name)
+        for j in range(len(videos[i].pictures)):
+            videos[i].pictures[j] = url_for('static', filename = 'media/profile_pictures/' + videos[i].pictures[j])
+
+    return render_template('videos.html', videos = videos)
 
 #Methods-----------------------------------------------------------------------
 def logged_in():
@@ -401,4 +397,4 @@ def verify_picture(filename):
     return False
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, use_reloader = False)

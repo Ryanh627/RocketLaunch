@@ -18,27 +18,25 @@
             <input class = 'text-input' type = 'text' placeholder = 'Search by user...'> </input>
     <button class = 'submit' type = 'submit' name = 'submit'>Search</button>
           </form>
-    <div class = 'videos'>
+    
+   <div class = 'videos'>
+      
+      {% for video in videos %}
       <div class = 'video-box'>
         <div class = 'video-header'>
           <div class = 'video-users'>
+            {% for i in range(video.users|length) %}
             <div class = 'video-user'>
-              <img src = 'https://i2.wp.com/ceklog.kindel.com/wp-content/uploads/2013/02/firefox_2018-07-10_07-50-11.png' title = 'User'></img>
-            <p>User</p>
+	       <img src = '{{video.pictures[i]}}' title = '{{video.users[i]}}'></img>
+	       <p>{{video.users[i]}}</p>
             </div>
-          <div class = 'video-user'>
-              <img src = 'https://i2.wp.com/ceklog.kindel.com/wp-content/uploads/2013/02/firefox_2018-07-10_07-50-11.png' title = 'User'></img>
-            <p>User</p>
-            </div>
-        <div class = 'video-user'>
-              <img src = 'https://i2.wp.com/ceklog.kindel.com/wp-content/uploads/2013/02/firefox_2018-07-10_07-50-11.png' title = 'User'></img>
-            <p>User</p>
-            </div>
+	    {% endfor %}
           </div>
-          <p class = 'text-center video-timestamp'>2020-11-12 20:26:27</p>
+	  <p class = 'text-center video-timestamp'>{{video.timestamp}}</p>
         </div>
-        <video src = 'http://techslides.com/demos/sample-videos/small.mp4' controls></video>
+	<video src = '{{video.name}}' controls></video>
       </div>
+      {% endfor %}
 
     </div>
 

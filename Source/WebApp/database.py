@@ -1,5 +1,6 @@
 import sqlite3, secrets, hashlib, time
 from queries import *
+from video import *
 
 DIR = "/home/pi/RocketLaunch/Source/WebApp/"
 DB_NAME = "rocketlaunch.db"
@@ -12,6 +13,7 @@ def db_init(num_pads):
     db.execute(QUERY_CREATE_TABLE_USERS)
     db.execute(QUERY_CREATE_TABLE_SETTINGS)
     db.execute(QUERY_CREATE_TABLE_AUTHORIZEDUSERS)
+    db.execute(QUERY_CREATE_TABLE_VIDEOS)
 
     #Close connection
     db.close()
@@ -454,6 +456,65 @@ def db_erase_authorized_users():
         if con is not None:
             con.close()
         return False
+
+def db_insert_video(users, path):
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+        
+        #Place users into single string
+        users_str = ''
+        for i in range(len(users)):
+            users_str = users_str + users[i]
+            if i != len(users):
+                users_str = users_str + '&'
+
+        #Insert video path into database
+        params = [path, user_str]
+        db.execute(QUERY_VIDEOS_INSERT, params)
+
+        #Close database
+        con.close()
+
+        return True
+
+    except Exception as e:
+        print(e)
+        if con is not None:
+            con.close()
+        return False
+
+def db_get_videos():
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+        
+        #Get all authorized users from the database
+        videos = db.execute(QUERY_VIDEOS_GET_ALL).fetchall()
+
+        #Format values into a video object for parsing
+        video_list = []
+        for video in videos:
+            picture_list = []
+            name = video[0]
+            user_list = video[1].split('&')
+            timestamp = video[2]
+            for user in user_list:
+                picture_list.append(db_get_picture(user))
+            video_list.append(Video(name, user_list, picture_list, timestamp))
+
+        #Close database
+        con.close()
+
+        return video_list
+
+    except:
+        if con is not None:
+            con.close()
+        return None
+
 
 def db_authorization_timeout():
     wait_time = 60
