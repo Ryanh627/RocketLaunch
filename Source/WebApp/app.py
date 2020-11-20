@@ -37,6 +37,10 @@ def index():
     else:
         return redirect(url_for('login'))
 
+@app.before_request
+def session_init():
+    session.permanent = False
+
 @app.route('/mission_control')
 def mission_control():
     if not logged_in():
@@ -351,12 +355,36 @@ def launch_config():
 
     return render_template('launch_config.html', pads = pads, users = users, authorized_users = authorized_users, record_launch = record_launch, recording_duration = recording_duration)
 
-@app.route('/videos')
+@app.route('/videos', methods = ['GET', 'POST'])
 def videos():
-    if not logged_in():
-        return redirect(url_for('login'))
-    
     videos = db_get_videos()
+    videos_temp = videos
+
+    empty_user = False
+    user = 'all'
+
+    if request.method == 'POST':
+        user = request.form['search-bar']
+    
+    video_list = []
+
+    if user == '':
+        user = 'all'
+    else:
+        for video in videos:
+            if user in video.users:
+                video_list.append(video)
+        
+        videos = video_list
+        
+    if len(video_list) == 0 and user != 'all':
+        user = 'all'
+        session['error'] = "Specified user not found. Please try again!"
+    
+    if user != 'all':
+        session['success'] = "Showing results for: " + user
+    else:
+        videos = videos_temp
 
     for i in range(len(videos)):
         videos[i].name = url_for('static', filename = 'media/videos/' + videos[i].name)

@@ -14,8 +14,8 @@
     </div>
     <h1 class = 'title text-center'>Videos</h1>
     
-    <form class = 'search-bar'>
-            <input class = 'text-input' type = 'text' placeholder = 'Search by user...'> </input>
+    <form class = 'search-bar' action = '/videos' method = 'POST'>
+            <input class = 'text-input' type = 'text' placeholder = 'Search by user...' name = 'search-bar'> </input>
     <button class = 'submit' type = 'submit' name = 'submit'>Search</button>
           </form>
     
@@ -40,17 +40,37 @@
 
     </div>
 
+{% if 'success' in session %}
+	<p class = 'green-text text-center'>{{session['success']}}</p>
+	<p hidden>{{session.pop('success')}}</p>
+{% endif %}
+
+{% if 'error' in session %}
+	<p class = 'red-text text-center'>{{session['error']}}</p>
+	<p hidden>{{session.pop('error')}}</p>
+{% endif %}
+
 
     <div id = 'footer-padding'></div>
     <div id = 'footer'>
-      {% if session['admin'] %}
+	{% if session['admin'] %}
         <a href = '/mission_control'><h2>Mission Control</h2></a>
 	<a href = '/launch_config'><h2>Launch Configuration</h2></a>
-	{% else %}
-	<a href = '/user_launch_page'><h2>Launch</h2></a>
+	<a href = '/logout'><h2 id = 'footer_logout'>Logout</h2></a>
 	{% endif %}
+
+	{% if not session['admin'] and 'username' in session %}
+	<a href = '/user_launch_page'><h2>Launch</h2></a>
 	<a href = '/my_account'><h2>My Account</h2></a>
+	<a href = '/logout'><h2 id = 'footer_logout'>Logout</h2></a>
+	{% endif %}
+
+	{% if not session['admin'] and 'username' not in session %}
+	<a href = '/login'><h2>Login</h2></a>
+	<a href = '/sign_up'><h2>Sign Up</h2></a>
       	<a href = '/logout'><h2 id = 'footer_logout'>Logout</h2></a>
+	{% endif %}
+
     </div>
   </body>
 </html>

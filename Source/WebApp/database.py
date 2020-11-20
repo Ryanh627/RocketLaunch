@@ -84,8 +84,8 @@ def db_signup(username, password):
         if username == "" or password == "":
             return False, False
 
-        #Error if username is "None"
-        if username == "None":
+        #Error if username is "None", "all", or contains "&"
+        if username == "None" or username == "all" or '&' in username:
             return False, False
 
         #Connect to database
