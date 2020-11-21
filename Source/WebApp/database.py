@@ -19,7 +19,8 @@ def db_init(num_pads):
     db.close()
 
     #Create admin user if it does not exist
-    db_signup("admin", "admin")
+    if not db_admin_exists():
+        db_signup("admin", "admin")
 
     #Create settings if they do not exist
     db_settings_init()
@@ -35,6 +36,27 @@ def db_connect():
 
     finally:
         return con
+
+def db_admin_exists():
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+
+        #Get all users in database and check for an admin
+        admins = db.execute(QUERY_USERS_GET_ISADMIN_ANY).fetchall()
+        
+        print(admins)
+        if len(admins) != 0:
+            return True
+        else:
+            return False
+
+    except Exception as e:
+        print(e)
+        if con is not None:
+            con.close()
+        return None
 
 def db_login(username, password):
     try:
@@ -173,17 +195,42 @@ def db_change_username(actual_username, current_username, new_username):
         #Error if actual_username and current_username do not match
         if actual_username != current_username:
             return False
-
-        #Update username in database
+        
+        #Update username in USERS database table
         params = [new_username, actual_username]
         db.execute(QUERY_USERS_UPDATE_USERNAME, params)
+
+        #Update username in AUTHORIZEDUSERS database table
+        db.execute(QUERY_AUTHORIZEDUSERS_UPDATE_USERNAME, params)
+
+        #Update username in VIDEOS database table
+        users_matrix = []
+        videos = db.execute(QUERY_VIDEOS_GET_USERS).fetchall()
+        for video in videos:
+            old_users_str = video[0]
+            users_arr = video[0].split('&')
+            new_users_str = ''
+            
+            for i in range(len(users_arr)):
+                if users_arr[i] == actual_username:
+                    users_arr[i] = new_username
+                new_users_str = new_users_str + users_arr[i]
+                if i != len(users_arr) - 1:
+                    new_users_str = new_users_str + '&'
+            
+            users_matrix.append([new_users_str, old_users_str])
+
+        for user in users_matrix:
+            params = [user[0], user[1]]
+            db.execute(QUERY_VIDEOS_UPDATE_USERS, params)
 
         #Close database
         con.close()
 
         return True
 
-    except:
+    except Exception as e:
+        print(e)
         if con is not None:
             con.close()
         return False

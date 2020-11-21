@@ -55,7 +55,8 @@
     <div id = 'footer'>
 	{% if session['admin'] %}
         <a href = '/mission_control'><h2>Mission Control</h2></a>
-	<a href = '/launch_config'><h2>Launch Configuration</h2></a>
+        <a href = '/launch_config'><h2>Launch Configuration</h2></a>
+	<a href = '/my_account'><h2>My Account</h2></a>
 	<a href = '/logout'><h2 id = 'footer_logout'>Logout</h2></a>
 	{% endif %}
 
@@ -68,7 +69,6 @@
 	{% if not session['admin'] and 'username' not in session %}
 	<a href = '/login'><h2>Login</h2></a>
 	<a href = '/sign_up'><h2>Sign Up</h2></a>
-      	<a href = '/logout'><h2 id = 'footer_logout'>Logout</h2></a>
 	{% endif %}
 
     </div>
