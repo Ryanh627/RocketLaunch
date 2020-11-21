@@ -46,7 +46,6 @@ def db_admin_exists():
         #Get all users in database and check for an admin
         admins = db.execute(QUERY_USERS_GET_ISADMIN_ANY).fetchall()
         
-        print(admins)
         if len(admins) != 0:
             return True
         else:
@@ -245,6 +244,35 @@ def db_delete(username):
         #Delete user from USERS table
         params = [username]
         db.execute(QUERY_USERS_DELETE, params)
+
+        #Delete user from AUTHORIZEDUSERS table
+        db.execute(QUERY_AUTHORIZEDUSERS_DELETE, params)
+
+        #Delete user in VIDEOS database table
+        users_matrix = []
+        videos = db.execute(QUERY_VIDEOS_GET_USERS).fetchall()
+        for video in videos:
+            old_users_str = video[0]
+            users_arr = video[0].split('&')
+            new_users_str = ''
+            new_users_arr = []
+            
+            for i in range(len(users_arr)):
+                if users_arr[i] != username:
+                    new_users_arr.append(users_arr[i])
+
+            for user in new_users_arr:
+                new_users_str = new_users_str + user + '&'
+            new_users_str = new_users_str[:-1]
+            
+            users_matrix.append([new_users_str, old_users_str])
+
+        for user in users_matrix:
+            params = [user[0], user[1]]
+            db.execute(QUERY_VIDEOS_UPDATE_USERS, params)
+
+        #Delete any videos without users
+        db.execute(QUERY_VIDEOS_DELETE_EMPTY)
 
         #Close database
         con.close()
