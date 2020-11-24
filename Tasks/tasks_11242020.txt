@@ -1,0 +1,27 @@
+Key:
+	I = Individual task
+	M = Meeting task
+
+Tasks-----------------------------------
+
+
+I1) Soldering
+
+I2) Launch function redesign
+
+I3) Presentation preperation
+
+I4) Meet with client to find test cases
+
+I5) Screen record all website features on phone
+
+I6) Implement GPIO initialization
+
+
+Assignments-----------------------------
+
+Benjamin: I3
+
+Ryan: I2, I3
+
+Peter: I1, I3, I4, I5, I6
