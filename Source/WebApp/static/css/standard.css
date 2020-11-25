@@ -115,3 +115,10 @@ a{
 button[disabled]{
   background-color:grey;
 }
+
+#footer div{
+  background-color:black;
+  padding:var(--padding-desk);
+  margin-bottom:0px;
+  margin-top:20px;
+}

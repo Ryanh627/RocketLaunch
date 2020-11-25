@@ -1,42 +1,35 @@
 <html>
   <head>
-	  <meta name = 'viewport' content = 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1'>
-	  <link rel = 'stylesheet' href = "{{url_for('static', filename = 'css/standard.css')}}"></link>
-	  <link rel = 'stylesheet' href = "{{url_for('static', filename = 'css/forms.css')}}"></link>
-	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/responsive.css')}}"></link>
+          <meta name = 'viewport' content = 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1'>
+	  <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/standard.css') }}"></link>
+          <link rel = 'stylesheet' href = "{{ url_for('static', filename='css/responsive.css')}}"></link>
+
   </head>
    
   <body>
     <div id = 'header'>
       <h1 class = 'text-center'>Raspberry Pi Virtual Launchpad</h1>
     </div>
-    
-    <div class = 'vertical-center-wrapper'>
-	    <div class = 'vertical-center-container'>
-		<div>
-		<h1 class = 'text-center'>{{prompt}}</h1>
-		
-		<form action = "{{url_for(topage)}}" method = 'POST'>
-        		<input type = 'submit' class = 'submit' value = 'Yes'></input>
-    		</form>
-		
-		<form action = "{{url_for(frompage)}}" method = 'POST'>
-        		<input type = 'submit' class = 'submit background-red' value = 'No'></input>
-    		</form>
-		</div>
-	</div>
 
-    </div>
+    <h1 class = 'title text-center'>Privacy Policy</h1>
+    <h2>What kind of information do we collect?</h2>
+    <p>This policy describes the information we receive for the functionality of the site. We collect only information you provide. This data includes the website usernames, passwords, and profile
+picture uploads. Any password stored on this site is encrypted and never stored in plain-text. We do not use cookies.</p>
+    <h2>Use of information</h2>
+    <p>This information is used for the functionality of the site, allowing users to launch rockets and tag rocket launch videos as their own. Information that is collected is not shared.</p>
 
-    {% if 'success' in session %}
+    <h2>Deletion of information</h2>
+    <p>If a user wants their information to be deleted, they may use the delete account tool in the My Account page.</p>
+
+{% if 'success' in session %}
 	<p class = 'green-text text-center'>{{session['success']}}</p>
 	<p hidden>{{session.pop('success')}}</p>
-    {% endif %}
+{% endif %}
 
-    {% if 'error' in session %}
+{% if 'error' in session %}
 	<p class = 'red-text text-center'>{{session['error']}}</p>
 	<p hidden>{{session.pop('error')}}</p>
-    {% endif %}
+{% endif %}
 
     <div id = 'footer-padding'></div>
     <div id = 'footer'>
@@ -67,7 +60,6 @@
 	</div>
 
     </div>
-
 
   </body>
 </html>

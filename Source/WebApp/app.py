@@ -393,6 +393,10 @@ def videos():
 
     return render_template('videos.html', videos = videos)
 
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
 #Methods-----------------------------------------------------------------------
 def logged_in():
     try:
