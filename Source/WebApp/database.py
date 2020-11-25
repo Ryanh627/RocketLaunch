@@ -1,3 +1,9 @@
+#Developed and owned by Benjamin Eckert, Peter Gifford, and Ryan Hansen of Western Michigan University.
+
+#database.py controls database functionality
+
+#Functions written in this module were developed by referencing sqlite3 documentation. sqlite3 nor the information provided by its documentation are owned by the aforementioned individuals.
+
 import sqlite3, secrets, hashlib, time
 from queries import *
 from video import *

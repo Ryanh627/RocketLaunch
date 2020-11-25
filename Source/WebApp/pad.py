@@ -1,3 +1,8 @@
+#Developed and owned by Benjamin Eckert, Peter Gifford, and Ryan Hansen of Western Michigan University.
+
+#pad.py controls the functionality of launch pad objects that are associated
+#with physical rockets
+
 import RPi.GPIO as GPIO
 import time
 from camera import take_video

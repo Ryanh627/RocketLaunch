@@ -1,3 +1,7 @@
+#Developed and owned by Benjamin Eckert, Peter Gifford, and Ryan Hansen of Western Michigan University.
+
+#camera.py controls the functionality of the camera wired to the pi
+
 import picamera
 import configparser
 from time import sleep

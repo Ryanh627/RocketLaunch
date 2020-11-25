@@ -8,13 +8,19 @@ Information about this directory:
 3) static is a folder for storing 'static' files for use with the templates such as 
    css and js files
 
-4) launch.py manages the launch process when called from app.py
+4) database.py handles all database functionality when called from app.py
 
-6) database.py handles all database functionality when called from app.py
-
-7) queries.py is a library of string constants for representing queries meant for
+5) queries.py is a library of string constants for representing queries meant for
    use by database.py
 
-8) rocketlaunch.wsgi is a file used by apache2 to work with Flask used with app.py
+6) rocketlaunch.wsgi is a file used by apache2 to work with Flask used with app.py
 
-9) rocketlaunch.db (if it exists) is the database used with database.py
+7) rocketlaunch.db (if it exists) is the database used with database.py
+
+8) video.py contains the definition of a video object
+
+9) pad.py associates launch pad objects with physical rockets
+
+10) pad.conf contains port information for pads
+
+11) camera.py controls functionality of the camera mounted to the pi
