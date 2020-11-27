@@ -32,23 +32,13 @@ class Pad:
 
     def launch(self):
         #origional code ---------
-        #Thread(target=take_video, args=()).start()
-        #GPIO.setup(self.pinOut,GPIO.OUT) 
-        #GPIO.output(self.pinOut,GPIO.HIGH) 
-        #GPIO.output(self.pinOut,GPIO.LOW)
-        #time.sleep(1)
-        #GPIO.output(self.pinOut,GPIO.HIGH)
         
-        #-------
-        
-        #temp code
-        #launch test
-        GPIO.output(20, GPIO.HIGH)
-        GPIO.output(21, GPIO.LOW)
+        GPIO.setup(self.pinOut,GPIO.OUT) 
+        GPIO.output(self.pinOut,GPIO.HIGH) 
+        GPIO.output(self.pinOut,GPIO.LOW)
         time.sleep(1)
-        GPIO.output(21, GPIO.HIGH)
-        GPIO.output(20, GPIO.LOW)
-        
+        GPIO.output(self.pinOut,GPIO.HIGH)
+      
         print("Launched " + self.name)
 
 #Construct a list of pad objects from the pad configuration file

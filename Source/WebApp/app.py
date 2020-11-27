@@ -342,6 +342,8 @@ def picture_upload():
 def launch():
     if request.method == 'POST':
 
+        #Start video thread before launches
+        Thread(target=take_video, args=()).start()
         #Launch each selected pad
         for pad in pads:
             if pad.name in session['selectedpads'] and pad.connected:

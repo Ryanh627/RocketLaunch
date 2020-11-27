@@ -5,7 +5,7 @@
 import picamera
 from database import *
 from subprocess import call
-from datetime import date
+from datetime import *
 import time
 
 def take_video():
@@ -16,10 +16,15 @@ def take_video():
         location = "/home/pi/RocketLaunch/Source/WebApp/static/media/Clips/"
         videoname = "tempclip.h264"
         File_h264 = location+videoname
-        date = fdate = date.today().strftime('%d/%m/%Y')
-        time = time.strftime("%H:%M:%S")
         
-        command = "MP4Box -add " + location+videoname + " " + location + "clip"+date+ ":" + time + ".mp4"
+        today = date.today()
+        fdate = today.strftime("%b-%d-%Y:")
+        
+        time = datetime.now()
+        ftime = time.strftime("%H:%M:%S")
+        File_mp4 = location + "clip_" + fdate+ftime+".mp4"
+        
+        command = "MP4Box -add " + File_h264 + " " + File_mp4
         
         duration = db_get_setting("RECORDINGDURATION")
         
@@ -30,4 +35,8 @@ def take_video():
         
         call([command], shell = True)
         
-        #db_insert_video(users, location + "clip.mp4")
+        users = db_get_authorized_users()
+        if(len(users) == 0):
+            users = ["None", "None", "None"]
+            
+        db_insert_video(users, File_mp4)
