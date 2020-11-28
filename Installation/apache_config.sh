@@ -1,6 +1,7 @@
 #!/bin/bash
 
 sudo apt-get update
+sudo apt install -y gpac
 sudo apt-get install apache2
 sudo apt-get install apache2-dev
 sudo apt install libapache2-mod-wsgi-py3 -y
