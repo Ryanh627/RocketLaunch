@@ -24,6 +24,11 @@ pads = pads_setup()
 db_init(len(pads))
 authorization_timeout = Process(target=db_authorization_timeout)
 
+def placeholder():
+    return
+
+launch_process = Process(target=placeholder)
+
 #App routes--------------------------------------------------------------------
 
 @app.route('/')
@@ -341,14 +346,22 @@ def picture_upload():
 @app.route('/launch', methods = ['POST', 'GET'])
 def launch():
     if request.method == 'POST':
+        
+        #Only enable launch if the launch process is not alive
+        global launch_process
 
-        #Start video thread before launches
-        Thread(target=take_video, args=()).start()
-        #Launch each selected pad
+        if not launch_process.is_alive():
+            session['error'] = "Launch failure! There is already a launch in progress!"
+            return redirect(url_for('mission_control'))
+
+        #Add selected pads to launch list
+        launch_list = []
         for pad in pads:
             if pad.name in session['selectedpads'] and pad.connected:
-                pad.launch()
+                launch_list.append(pad)
 
+        #Launch the qualified pads
+        launch_process = Process(target=process_launch, args=(launch_list,))
         session.pop('selectedpads', None)
 
     return redirect(url_for('mission_control'))
@@ -364,11 +377,22 @@ def user_launch(index):
             return redirect(url_for('mission_control'))
         else:
             return redirect(url_for('my_account'))
+
+    #Only enable launch if the launch process is not alive
+    global launch_process
+
+    if not launch_process.is_alive():
+        session['error'] = "Launch failure! There is already a launch in progress!"
+        return redirect(url_for('user_launch_page'))
     
-    #Launch the pad associated with the user associated with the index
+    #Add the pad associated with the index associated with the user to the launch list
+    launch_list = []
     index = int(index)
     pad = pads[index]
-    pad.launch()
+    launch_list.append(pad)
+    
+    #Launch qualified pads
+    launch_process = Process(target=process_launch, args=(launch_list,))
 
     return redirect(url_for('user_launch_page'))
     
@@ -518,6 +542,37 @@ def verify_picture(filename):
             return True
     
     return False
+
+#Launch rockets
+def process_launch(provided_pads):
+    #Get authorized users
+    authorized_users = db_get_authorized_users()
+
+    #Get if all are "None"
+    no_users = True
+
+    for user in authorized_users:
+        if user != "None":
+            no_users = False 
+
+    #Start video thread before launches
+    if not no_users:
+        Thread(target=take_video, args=()).start()
+    
+    #Launch each pad
+    for pad in provided_pads:
+        if pad.connected:
+            pad.launch()
+
+    #Deauthorize any users associated with the provided pads
+    user_list = []
+
+    for i in range(len(pads)):
+        if pads[i] in provided_pads:
+            user_list.append(authorized_users[i])
+
+    for user in users_list:
+        db_update_authorized_user(user, 'None')
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader = False)

@@ -13,7 +13,7 @@ def take_video():
     if db_get_setting("RECORDLAUNCH"):
         
         camera = picamera.PiCamera()
-        location = "/home/pi/RocketLaunch/Source/WebApp/static/media/Clips/"
+        location = "/home/pi/RocketLaunch/Source/WebApp/static/media/videos/"
         videoname = "tempclip.h264"
         File_h264 = location+videoname
         
@@ -36,7 +36,10 @@ def take_video():
         call([command], shell = True)
         
         users = db_get_authorized_users()
-        if(len(users) == 0):
-            users = ["None", "None", "None"]
-            
-        db_insert_video(users, File_mp4)
+        user_list = []
+
+        for user in user_list:
+            if user != 'None':
+                user_list.append(user)
+
+        db_insert_video(user_list, File_mp4)

@@ -453,15 +453,15 @@ def db_get_authorized_users():
             con.close()
         return None
 
-def db_insert_authorized_user(username):
+def db_update_authorized_user(username, new):
     try:
         #Connect to database
         con = db_connect()
         db = con.cursor()
         
-        #Insert authorized user into database
-        params = [username]
-        db.execute(QUERY_AUTHORIZEDUSERS_INSERT, params)
+        #Update authorized username in the database
+        params = [new, username]
+        db.execute(QUERY_AUTHORIZEDUSERS_UPDATE_USERNAME, params)
 
         #Close database
         con.close()
