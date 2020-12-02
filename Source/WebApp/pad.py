@@ -26,7 +26,7 @@ class Pad:
         if state == False:
             self.connected = True
         else:
-            self.connected = False
+            self.connected = True
 
         GPIO.cleanup(GPIOpin)
 

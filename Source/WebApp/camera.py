@@ -12,34 +12,48 @@ def take_video():
     
     if db_get_setting("RECORDLAUNCH"):
         
-        camera = picamera.PiCamera()
-        location = "/home/pi/RocketLaunch/Source/WebApp/static/media/videos/"
-        videoname = "tempclip.h264"
-        File_h264 = location+videoname
+        print("taking video")
         
-        today = date.today()
-        fdate = today.strftime("%b-%d-%Y:")
+        try:
+            camera = picamera.PiCamera()
+            location = "/home/pi/RocketLaunch/Source/WebApp/static/media/videos/"
+            videoname = "tempclip.h264"
+            File_h264 = location+videoname
         
-        time = datetime.now()
-        ftime = time.strftime("%H:%M:%S")
-        File_mp4 = location + "clip_" + fdate+ftime+".mp4"
+            today = date.today()
+            fdate = today.strftime("%b-%d-%Y:")
         
-        command = "MP4Box -add " + File_h264 + " " + File_mp4
+            time = datetime.now()
+            ftime = time.strftime("%H:%M:%S")
+            File_mp4 = location + "clip_" + fdate+ftime+".mp4"
         
-        duration = db_get_setting("RECORDINGDURATION")
+            command = "MP4Box -add " + File_h264 + " " + File_mp4
         
-        camera.start_recording(location+videoname)
-        camera.wait_recording(duration)
-        camera.stop_recording()
-        camera.close()
+            duration = db_get_setting("RECORDINGDURATION")
+            
+            print(duration)
         
-        call([command], shell = True)
+            camera.start_recording(location+videoname)
+            camera.wait_recording(duration)
+            camera.stop_recording()
+            camera.close()
         
-        users = db_get_authorized_users()
-        user_list = []
+            call([command], shell = True)
+        
+            users = db_get_authorized_users()
+            user_list = []
 
-        for user in user_list:
-            if user != 'None':
-                user_list.append(user)
+            for user in users:
+                if user != 'None':
+                    user_list.append(user)
+                
+            print(user_list)
 
-        db_insert_video(user_list, File_mp4)
+            if(len(user_list) != 0):
+                db_insert_video(user_list, File_mp4)
+
+        except Exception as e:
+            print(e)
+        
+        
+        

@@ -548,7 +548,7 @@ def db_insert_video(users, path):
                 users_str = users_str + '&'
 
         #Insert video path into database
-        params = [path, user_str]
+        params = [path, users_str]
         db.execute(QUERY_VIDEOS_INSERT, params)
 
         #Close database

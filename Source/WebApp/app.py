@@ -25,6 +25,7 @@ db_init(len(pads))
 authorization_timeout = Process(target=db_authorization_timeout)
 
 def placeholder():
+    print("placeholder-----------------")
     return
 
 launch_process = Process(target=placeholder)
@@ -343,10 +344,12 @@ def picture_upload():
 def launch():
     if request.method == 'POST':
         
+        print("admin started launch")
+        
         #Only enable launch if the launch process is not alive
         global launch_process
 
-        if not launch_process.is_alive():
+        if launch_process.is_alive():
             session['error'] = "Launch failure! There is already a launch in progress!"
             return redirect(url_for('mission_control'))
 
@@ -358,7 +361,10 @@ def launch():
 
         #Launch the qualified pads
         launch_process = Process(target=process_launch, args=(launch_list,))
+        launch_process.start()
         session.pop('selectedpads', None)
+        
+        print("admin launch finished")
 
     return redirect(url_for('mission_control'))
 
@@ -377,7 +383,7 @@ def user_launch(index):
     #Only enable launch if the launch process is not alive
     global launch_process
 
-    if not launch_process.is_alive():
+    if launch_process.is_alive():
         session['error'] = "Launch failure! There is already a launch in progress!"
         return redirect(url_for('user_launch_page'))
     
@@ -389,6 +395,7 @@ def user_launch(index):
     
     #Launch qualified pads
     launch_process = Process(target=process_launch, args=(launch_list,))
+    launch_process.start()
 
     return redirect(url_for('user_launch_page'))
     
@@ -493,6 +500,7 @@ def videos():
     #Fill matrix with video objects
     for i in range(len(videos)):
         videos[i].name = url_for('static', filename = 'media/videos/' + videos[i].name)
+        print(videos[i].name)
         for j in range(len(videos[i].pictures)):
             videos[i].pictures[j] = url_for('static', filename = 'media/profile_pictures/' + videos[i].pictures[j])
 
@@ -541,6 +549,7 @@ def verify_picture(filename):
 
 #Launch rockets
 def process_launch(provided_pads):
+    print("process launch start")
     #Get authorized users
     authorized_users = db_get_authorized_users()
 
@@ -567,8 +576,10 @@ def process_launch(provided_pads):
         if pads[i] in provided_pads:
             user_list.append(authorized_users[i])
 
-    for user in users_list:
+    for user in user_list:
         db_update_authorized_user(user, 'None')
+        
+    print("process launch done")
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader = False)
