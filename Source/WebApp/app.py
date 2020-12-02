@@ -237,10 +237,6 @@ def authorize():
     if db_erase_authorized_users() == False:
         error = True
 
-    #Make sure an authorized_users table is set up 
-    #that is the same length as the number of launch pads
-    db_authorized_users_init(len(pads))
-
     #Insert authorized users into database
     for user in authorized_users:
         if db_insert_authorized_user(user) == False:

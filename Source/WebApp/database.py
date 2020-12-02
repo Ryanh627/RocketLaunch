@@ -31,7 +31,7 @@ def db_init(num_pads):
     #Create settings if they do not exist
     db_settings_init()
 
-    #Erase any lingering authorized users
+    #Clear any lingering authorized users
     db_erase_authorized_users()
 
 def db_connect():
@@ -474,6 +474,27 @@ def db_update_authorized_user(username, new):
             con.close()
         return False
 
+def db_insert_authorized_user(user):
+    try:
+        #Connect to database
+        con = db_connect()
+        db = con.cursor()
+
+        #Insert authorized user into database
+        params = [user]
+        db.execute(QUERY_AUTHORIZEDUSERS_INSERT, params)
+
+        #Close database
+        con.close()
+
+        return True
+
+    except Exception as e:
+        print(e)
+        if con is not None:
+            con.close()
+        return False
+
 def db_clear_authorized_users():
     try:
         #Connect to database
@@ -490,31 +511,6 @@ def db_clear_authorized_users():
 
     except Exception as e:
         print(e)
-        if con is not None:
-            con.close()
-        return False
-
-def db_authorized_users_init(num):
-    try:
-        #Connect to database
-        con = db_connect()
-        db = con.cursor()
-        
-        #Get all authorized users from database
-        authorized_users = db.execute(QUERY_AUTHORIZEDUSERS_GET_USERNAMES).fetchall()
-
-        if len(authorized_users) == num:
-            return False
-
-        for i in range(num):
-            db.execute(QUERY_AUTHORIZED_USERS_INSERT)
-
-        #Close database
-        con.close()
-
-        return True
-
-    except:
         if con is not None:
             con.close()
         return False
