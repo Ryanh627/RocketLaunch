@@ -549,37 +549,38 @@ def verify_picture(filename):
 
 #Launch rockets
 def process_launch(provided_pads):
-    print("process launch start")
-    #Get authorized users
-    authorized_users = db_get_authorized_users()
+    
+    #Get video recording setting
+    record_video = db_get_setting("RECORDLAUNCH")
 
-    #Get if all are "None"
-    no_users = True
+    if record_video:
+        #Get authorized users
+        authorized_users = db_get_authorized_users()
 
-    for user in authorized_users:
-        if user != "None":
-            no_users = False 
+        #Get if all are "None"
+        no_users = True
+        for user in authorized_users:
+            if user != "None":
+                no_users = False
 
-    #Start video thread before launches
-    if not no_users:
-        Process(target=take_video(authorized_users), args=()).start()
+        #Get all users in provided pads
+        user_list = []
+        for i in range(len(pads)):
+            if pads[i] in provided_pads:
+                user_list.append(authorized_users[i])
+
+        #Start video thread before launches
+        if not no_users:
+            Process(target=take_video(user_list), args=()).start()
+
+        #Deauthorize any users associated with the provided pads
+        for user in user_list:
+            db_update_authorized_user(user, 'None')
     
     #Launch each pad
     for pad in provided_pads:
         if pad.connected:
             pad.launch()
-
-    #Deauthorize any users associated with the provided pads
-    user_list = []
-
-    for i in range(len(pads)):
-        if pads[i] in provided_pads:
-            user_list.append(authorized_users[i])
-
-    for user in user_list:
-        db_update_authorized_user(user, 'None')
-        
-    print("process launch done")
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader = False)
