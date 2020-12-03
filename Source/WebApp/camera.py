@@ -6,7 +6,7 @@ import picamera
 from database import *
 from subprocess import call
 from datetime import *
-import time
+from time import *
 
 def take_video():
     
@@ -30,13 +30,12 @@ def take_video():
             command = "MP4Box -add " + File_h264 + " " + File_mp4
         
             duration = db_get_setting("RECORDINGDURATION")
-            
-            print(duration)
         
             camera.start_recording(location+videoname)
             camera.wait_recording(duration)
             camera.stop_recording()
             camera.close()
+        
         
             call([command], shell = True)
         
