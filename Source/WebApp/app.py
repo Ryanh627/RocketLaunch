@@ -562,7 +562,7 @@ def process_launch(provided_pads):
 
     #Start video thread before launches
     if not no_users:
-        Process(target=take_video, args=()).start()
+        Process(target=take_video(authorized_users), args=()).start()
     
     #Launch each pad
     for pad in provided_pads:
@@ -570,14 +570,14 @@ def process_launch(provided_pads):
             pad.launch()
 
     #Deauthorize any users associated with the provided pads
-    #user_list = []
+    user_list = []
 
-   # for i in range(len(pads)):
-    #    if pads[i] in provided_pads:
-    #        user_list.append(authorized_users[i])
+    for i in range(len(pads)):
+        if pads[i] in provided_pads:
+            user_list.append(authorized_users[i])
 
-    #for user in user_list:
-     #   db_update_authorized_user(user, 'None')
+    for user in user_list:
+        db_update_authorized_user(user, 'None')
         
     print("process launch done")
 

@@ -8,7 +8,7 @@ from subprocess import call
 from datetime import *
 from time import *
 
-def take_video():
+def take_video(users):
     
     if db_get_setting("RECORDLAUNCH"):
         
@@ -39,7 +39,7 @@ def take_video():
         
             call([command], shell = True)
         
-            users = db_get_authorized_users()
+            #users = db_get_authorized_users()
             user_list = []
 
             for user in users:
