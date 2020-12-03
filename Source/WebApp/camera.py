@@ -18,16 +18,16 @@ def take_video():
             camera = picamera.PiCamera()
             location = "/home/pi/RocketLaunch/Source/WebApp/static/media/videos/"
             videoname = "tempclip.h264"
-            File_h264 = location+videoname
-        
+            File_h264 = videoname
+            
             today = date.today()
             fdate = today.strftime("%b-%d-%Y:")
         
             time = datetime.now()
             ftime = time.strftime("%H:%M:%S")
-            File_mp4 = location + "clip_" + fdate+ftime+".mp4"
+            File_mp4 = "clip_" + fdate+ftime+".mp4"
         
-            command = "MP4Box -add " + File_h264 + " " + File_mp4
+            command = "MP4Box -add " + location+File_h264 + " " + location+File_mp4
         
             duration = db_get_setting("RECORDINGDURATION")
         

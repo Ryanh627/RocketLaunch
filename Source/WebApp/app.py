@@ -499,7 +499,7 @@ def videos():
     
     #Fill matrix with video objects
     for i in range(len(videos)):
-        videos[i].name = url_for('static', filename = 'media/videos/' + videos[i].name)
+        videos[i].name = url_for('static', filename = "media/videos/" + videos[i].name)
         print(videos[i].name)
         for j in range(len(videos[i].pictures)):
             videos[i].pictures[j] = url_for('static', filename = 'media/profile_pictures/' + videos[i].pictures[j])

@@ -546,6 +546,8 @@ def db_insert_video(users, path):
             users_str = users_str + users[i]
             if i != len(users):
                 users_str = users_str + '&'
+                
+        users_str = users_str[:-1]
 
         #Insert video path into database
         params = [path, users_str]
