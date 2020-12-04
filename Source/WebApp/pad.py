@@ -12,9 +12,10 @@ GPIO.setmode(GPIO.BCM)
 
 class Pad:
     #Constructor
-    def __init__(self, name, pinIn, pinOut):
+    def __init__(self, name, pinIn, pinOut, pinCC):
         self.pinIn = pinIn
         self.pinOut = pinOut
+        self.pinCC = pinCC
         self.connected = False
         self.name = name
 
@@ -33,11 +34,15 @@ class Pad:
     def launch(self):
         #origional code ---------
         
-        GPIO.setup(self.pinOut,GPIO.OUT) 
-        GPIO.output(self.pinOut,GPIO.HIGH) 
+        GPIO.setup(self.pinOut,GPIO.OUT)
+        GPIO.setup(self.pinCC,GPIO.OUT)
+        GPIO.output(self.pinCC,GPIO.HIGH)
+        GPIO.output(self.pinOut,GPIO.HIGH)
         GPIO.output(self.pinOut,GPIO.LOW)
         time.sleep(1)
         GPIO.output(self.pinOut,GPIO.HIGH)
+        time.sleep(1)
+        GPIO.output(self.pinCC,GPIO.LOW)
       
         print("Launched " + self.name)
 
@@ -60,7 +65,7 @@ def pads_setup():
         args = line.split('\t')
 
         #Create pad object, add to list, iterate index
-        pad = Pad('Pad ' + str(i), int(args[0]), int(args[1]))
+        pad = Pad('Pad ' + str(i), int(args[0]), int(args[1]), int(args[2]))
         pads.append(pad)
         i = i + 1
     

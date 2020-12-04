@@ -1,0 +1,6 @@
+Wiring should no longer change. GPIO as follows:
+
+
+Pad1: IN 14 OUT 8 CircuitcheckerRelay 16 CircuitcheckerOUT 2
+Pad1: IN 15 OUT 7 CircuitcheckerRelay 20 CircuitcheckerOUT 3
+Pad1: IN 18 OUT 1 CircuitcheckerRelay 21 CircuitcheckerOUT 4

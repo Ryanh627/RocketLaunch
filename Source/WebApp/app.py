@@ -20,6 +20,7 @@ UPLOAD_FOLDER = '/home/pi/RocketLaunch/Source/WebApp/static/media/profile_pictur
 ALLOWED_PICTURE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+#initialize_circuit()
 pads = pads_setup()
 db_init(len(pads))
 authorization_timeout = Process(target=db_authorization_timeout)
@@ -513,6 +514,18 @@ def privacy():
     return render_template('privacy.html')
 
 #Methods-----------------------------------------------------------------------
+#Initialize GPIO for circuit checker
+def initialize_circuit():
+    GPIO.setup(2,GPIO.OUT)
+    GPIO.setup(3,GPIO.OUT)
+    GPIO.setup(4,GPIO.OUT)
+    GPIO.setup(16,GPIO.OUT)
+    GPIO.setup(20,GPIO.OUT)
+    GPIO.setup(21,GPIO.OUT)
+    GPIO.output(16,GPIO.LOW)
+    GPIO.output(20,GPIO.LOW)
+    GPIO.output(21,GPIO.LOW)
+    return False
 #Get whether a user is logged in
 def logged_in():
     try:
