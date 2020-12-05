@@ -33,7 +33,6 @@ class Pad:
 
     def launch(self):
         #origional code ---------
-        
         GPIO.setup(self.pinOut,GPIO.OUT)
         GPIO.setup(self.pinCC,GPIO.OUT)
         GPIO.output(self.pinCC,GPIO.HIGH)

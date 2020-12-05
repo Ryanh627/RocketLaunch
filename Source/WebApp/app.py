@@ -13,6 +13,11 @@ from database import *
 from multiprocessing import Process
 from werkzeug.utils import secure_filename
 
+import picamera
+from subprocess import call
+from datetime import *
+from time import *
+
 app = Flask(__name__, static_url_path = '/static')
 app.secret_key = b'1\xcd/a\x88\x9fV5\x07|q\x91\xfa`\xc1y'
 
@@ -578,23 +583,63 @@ def process_launch(provided_pads):
                 no_users = False
 
         #Get all users in provided pads
-        user_list = []
+        users = []
         for i in range(len(pads)):
             if pads[i] in provided_pads:
-                user_list.append(authorized_users[i])
+                users.append(authorized_users[i])
+                
+        #Deauthorize any users associated with the provided pads
+        for user in users:
+            db_update_authorized_user(user, 'None')
+            
 
         #Start video thread before launches
         if not no_users:
-            Process(target=take_video(user_list), args=()).start()
+#             Process(target=take_video(user_list), args=()).start()
+            camera = picamera.PiCamera()
+            location = "/home/pi/RocketLaunch/Source/WebApp/static/media/videos/"
+            videoname = "tempclip.h264"
+            File_h264 = videoname
 
-        #Deauthorize any users associated with the provided pads
-        for user in user_list:
-            db_update_authorized_user(user, 'None')
+            today = date.today()
+            fdate = today.strftime("%b-%d-%Y:")
+            time = datetime.now()
+
+            ftime = time.strftime("%H:%M:%S")
+            File_mp4 = "clip_" + fdate+ftime+".mp4"
+        
+            command = "MP4Box -add " + location+File_h264 + " " + location+File_mp4
+
+            duration = db_get_setting("RECORDINGDURATION")
+            duration = duration - 2
+            if duration < 0:
+                duration = 0
+        
+            camera.start_recording(location+videoname)
+            
     
     #Launch each pad
     for pad in provided_pads:
         if pad.connected:
             pad.launch()
+            
+    if record_video:
+        if not no_users:
+            camera.wait_recording(duration)
+            camera.stop_recording()
+            camera.close()
+
+            call([command], shell = True)
+
+            user_list = []
+
+            for user in users:
+                if user != 'None':
+                    user_list.append(user)
+
+            if(len(user_list) != 0):
+                db_insert_video(user_list, File_mp4)
+    
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader = False)
