@@ -4,12 +4,13 @@
 
 #Functions written in this module were developed by referencing sqlite3 documentation. sqlite3 nor the information provided by its documentation are owned by the aforementioned individuals.
 
-import sqlite3, secrets, hashlib, time
+import sqlite3, secrets, hashlib, time, os
 from queries import *
 from video import *
 
 DIR = "/home/pi/RocketLaunch/Source/WebApp/"
 DB_NAME = "rocketlaunch.db"
+os.system('sudo chmod a+rwx ' + DIR + DB_NAME)
 
 def db_init(num_pads):
     #Create database if it does not exist
@@ -190,6 +191,10 @@ def db_change_password(username, current_password, new_password):
 def db_change_username(actual_username, current_username, new_username):
     #Error if current or new username are empty
     if current_username == "" or new_username == "":
+        return False
+
+    #Error if username is "None", "all", or contains "&"
+    if new_username == "None" or new_username == "all" or '&' in new_username:
         return False
 
     try:
